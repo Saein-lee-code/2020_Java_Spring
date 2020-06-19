@@ -13,8 +13,14 @@ public class NormalVsRef {
 		System.out.println("after num[0]: " + numArr[0]);
 		
 	}
+	
+	// method 가 한번 실행 되고 끝나면서, parameter 안의 변수는 사라짐.
+	
 	// 두개 다른 변수이고, 
 	// changeVal의 num 은 main의 num 값인 리터럴 값(30)을 받음.
+	
+	
+	
 	public static void changeVal(int num) {
 		num = 30;
 	}
