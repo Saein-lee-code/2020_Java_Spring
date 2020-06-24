@@ -11,12 +11,11 @@ public class MyListTest {
 		list.add(15);
 		list.add(20);
 		list.add(30);
-		list.add(1, 100); 
-		list.arrDisplay();
+		list.add(1, 100);	
 		
 		int delVal = list.remove();
 		System.out.println("delVal: " + delVal);
-		list.arrDisplay();
+		
 		
 		int len = list.size(); // 2
 		System.out.println("list size: " + len);
@@ -30,6 +29,9 @@ public class MyListTest {
 //		list.remove(1);
 //		System.out.print("1번째 인덱스 값 삭제: ");
 //		list.arrDisplay();
+		for(int i=0; i<list.size(); i++) {
+			System.out.print(list.get(i) + ", ");
+		}
 	}	
 }
 
@@ -108,7 +110,7 @@ class MyList{
 		return del;
 	}
 	
-	void arrDisplay() {
-		System.out.println("arr list: " + Arrays.toString(arr));
-	}
+//	void arrDisplay() {
+//		System.out.println("arr list: " + Arrays.toString(arr));
+//	}
 }
