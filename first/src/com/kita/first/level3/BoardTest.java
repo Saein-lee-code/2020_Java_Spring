@@ -14,9 +14,14 @@ public class BoardTest {
 		//static 으로 만들어 줘야함
 		display(bv1);
 		display(bv2);
+		
+		// String str = "안녕" + "하세요" + "바보";
+		// 객체가 총 5개 생성 됌 (안녕/하세요/바보/안녕하세요/안녕하세요바보)
+		// 그래서 Stringbuilder이란걸 씀.
 	}	
 	public static void display(BoardVO temp) {
 		System.out.printf("Title: %s\n" + "Content: %s\n" + "WriteID: %d\n\n", 
 				temp.getTitle(), temp.getContent(), temp.getWriteId());		
 	}
+	
 }
