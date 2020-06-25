@@ -13,26 +13,62 @@ public class MyListTest {
 		list.add(30);
 		list.add(1, 100);	
 		
-		int delVal = list.remove();
-		System.out.println("delVal: " + delVal);
+		//int delVal = list.remove();
+		//System.out.println("delVal: " + delVal);
 		
 		
-		int len = list.size(); // 2
-		System.out.println("list size: " + len);
-		int val = list.get(1); // 15
-		System.out.println("arr[1] val: " + val);
-		val = list.get(0); // 10
-		System.out.println("arr[0] val: " + val);
+		//int len = list.size(); // 2
+		// System.out.println("list size: " + len);
+		// int val = list.get(1); // 15
+		// System.out.println("arr[1] val: " + val);
+		// val = list.get(0); // 10
+		// System.out.println("arr[0] val: " + val);
 		// list.remove();
 		//list.arrDisplay();		
 		
 //		list.remove(1);
 //		System.out.print("1번째 인덱스 값 삭제: ");
 //		list.arrDisplay();
-		for(int i=0; i<list.size(); i++) {
-			System.out.print(list.get(i) + ", ");
-		}
+//		for(int i=0; i<list.size(); i++) {
+//			System.out.print(list.get(i) + ", ");
+//		}
+		
+		MyArrays.print(list); //클래스 명 . method => static method
+		String str = MyArrays.toString(list);
+		System.out.println(str);
 	}	
+}
+
+class MyArrays {	
+	static void print(MyList l) {
+		System.out.print("[");
+		for(int i = 0; i < l.size(); i++) {
+			System.out.print(i==l.size()-1? l.get(i) +"]" : l.get(i) + ", ");			
+		}
+	}
+	static String toString(MyList l) {
+		String[] temp = new String[l.size()];
+		String result = "[";
+		for(int i=0; i<temp.length; i++) {
+			temp[i] = l.get(i);
+			if(i == temp.length - 1)
+				result += temp[i];
+			else
+				result += temp[i] +", ";			
+		}
+		result = result + "]";
+		return "\ntoString 결과 : " + result;
+		
+		/*
+		 * String str = "";
+		 * for(int i=0; i<list.size(); i++){
+		 * 		if(i>0) { 
+		 * 			str+=",";
+		 * 			str += list.get(i);
+		 *  	}
+		 *  return "[" + str + "]";
+		 *  return String.format("[%s]", str);*/
+	}
 }
 
 class MyList{
@@ -75,10 +111,13 @@ class MyList{
 		return arr.length;
 	}
 	
-	int get(int n) {		
-		return arr[n];
+//	int get(int n) {		
+//		return arr[n];
+//	}
+
+	String get(int i) {		 
+		return String.valueOf(arr[i]);
 	}
-	
 //	void remove() {
 //		int[] temp = new int[arr.length - 1];
 //		for(int i=0; i < temp.length; i++) {
@@ -113,4 +152,7 @@ class MyList{
 //	void arrDisplay() {
 //		System.out.println("arr list: " + Arrays.toString(arr));
 //	}
+	
+	
 }
+
