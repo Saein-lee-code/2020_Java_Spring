@@ -11,7 +11,7 @@ public class MyBall {
 	}
 	
 	private void init(int n) {
-		myArr = new int[n];
+		myArr = new int[n];	
 	}
 	int get(int n) {
 		return myArr[n];
@@ -27,27 +27,23 @@ public class MyBall {
 				// 숫자는 숫자로 변형 해주고, 문자는 catch로 감.
 				// 문자가 들어오면 밑에 myArr[i] = 0이 됌.
 			}catch(Exception e) {
-				myArr[i] = 0;
-			}
-			if(myArr[i] == 0) {
 				i--;
 				System.out.println("숫자만 입력하세요.");
 				continue;
-			}
-			
+			}			
 			if(myArr[i] < 1 || myArr[i] > 9) {
 				i--;
 				System.out.println("1~9값만 입력하세요.");
 				continue;
 			}
-			
 			for(int z=0; z<i; z++) {				
 				if(myArr[i] == myArr[z]) {
 					i--;
 					System.out.println("중복된 값이 존재합니다.");
 					break;
 				}
-			}
+			}					
+			
 			System.out.println(Arrays.toString(myArr));			
 		}		
 	}
