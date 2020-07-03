@@ -51,7 +51,7 @@ public class Gugudan {
 		}
 		return s;		
 	} 
-	public static void gugudan(int s, int e) {
+ static void gugudan(int s, int e) {
 		for(int k = s; k <= e; k++) {
 			System.out.printf("-----%d단-----\n", k);
 			for(int i=1; i <= 9; i++) {
