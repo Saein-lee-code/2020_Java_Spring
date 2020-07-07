@@ -1,14 +1,18 @@
 package com.koreait.second.blackjack;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
+import java.util.Scanner;
 
 public class Gamer {
-	private List<Card> arr = new ArrayList();
+	private LinkedList<Card> arr;
+	Scanner scan = new Scanner(System.in);
 	// generic <Card> 차이?
 	// 형변환 불필요
 	// 객체 생성이 가능한 타입에 대해서만 제네릭 사용이 가능하다.
 	// 
+	public Gamer() {
+		arr = new LinkedList();
+	}
 	
 	// 추가로 카드를 뽑는다
 	// 뽑은 카드를 소유한다	
@@ -31,4 +35,20 @@ public class Gamer {
 		}
 		return total;
 	}
+	
+	public void moreCards(CardDeck cd){				
+		while(true) {			
+			System.out.println("카드를 더 받겠습니까?");
+			String answer = scan.next();			
+			if("y".equals(answer)) {
+				receiveCard(cd.getCard());				
+			}else {
+				System.out.println("카드를 받지 않았습니다.");
+				break;				
+			}
+			openCards();						
+		}		
+	}
+	
+
 }
