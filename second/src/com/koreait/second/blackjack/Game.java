@@ -13,7 +13,7 @@ public class Game {
 		}
 		dealer.moreCards(cd);
 		gamer.moreCards(cd);
-		dealer.openCards();
+		dealer.openCards();	
 		Rule.whoIsWin(gamer, dealer);
 		
 	}

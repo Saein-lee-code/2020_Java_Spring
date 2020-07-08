@@ -34,7 +34,7 @@ public class CardDeck {
 	private int getScore(int score) {
 		return score > 10 ? 10 : score;
 	}
-//	수정 삭제가 많다 linked array & array list 쓰임새 다름
+	// 수정 삭제가 많다 linked array & array list 쓰임새 다름
 	public Card getCard() {
 		int rIdx = (int)(Math.random() * arr.size());
 		return arr.remove(rIdx);	 // 삭제하는 동시에 주소값도 return
