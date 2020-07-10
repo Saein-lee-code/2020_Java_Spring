@@ -12,7 +12,7 @@ public class MenuItem {
 	private int price;		
 	
 	// 메소드와 생성자 다른점 두가지, type x, class 명과 같아야함
-	// 메소드는 대문자로 시작하면 안됌
+	// 메소드는 대문자로 시작하면 안됌s
 	// parameter = 지역변수
 	public MenuItem(String name, int price) {
 		this.name = name;
@@ -26,13 +26,12 @@ public class MenuItem {
 	public int getPrice() {
 		return price;
 	}
-	
-
-	
 	// 실수를 줄이고자 함
 	// 부모 클래스에서 있는지 확인하기위해
 	@Override
 	public String toString() {
-		return String.format("%s - %d원", name, price);
+		return String.format("%s\t\t%,4d원", name, price);
 	}
+
+	
 }

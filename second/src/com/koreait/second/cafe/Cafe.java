@@ -8,12 +8,16 @@ public class Cafe {
 //		System.out.println(mi);
 //		System.out.println(mi2);
 		
-		Menu m = new Menu();		
-		m.showMenu();
-		
-		MenuItem mi = m.choose(0);
-		System.out.println(mi); 
-		// 아메리카노, 1500원 객체가 넘어와야함
+//		Menu m = new Menu();		
+//		m.showMenu();
+//
+		Menu menu = new Menu();
+		Customer cus = new Customer();				
+		Barista bas = new Barista();
+		MenuItem choiceMenu = cus.order(menu);
+		// Coffee coffee = new Coffee(choiceMenu);
+		Coffee coffee = bas.makeCoffee(choiceMenu);
+		cus.drinkCoffee(coffee);		
 		
 	}
 }
