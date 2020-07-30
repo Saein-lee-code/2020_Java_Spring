@@ -11,22 +11,22 @@ public class OracleDAO {
 	
 	//싱글톤
 	// 변수 static
-	private static OracleDAO dao = null; 
+//	private static OracleDAO dao = null; 
 	// 기본 생성자 원래는 public 붙음
 	// 여기서 private 를 하면, OracleDAO 밖에서는 객체생성을 불가능. (instance할수없음)
 	
-	private OracleDAO() {}
+//	private OracleDAO() {}
 	
 	// method static
 	// OracleDAO 를 객체생성하지 않아도 여기서 만들어지면서 return을 해줌( 객체화가 된 주소값)
 	// 딱 한번만 dao에 주소값이 저장될때까지 객체생성 (총1회)
 	// 객체를 밖에선 못만들고 안에서 이미 만든것을 넣어줌
-	public static OracleDAO getInstance() {
-		if(dao == null) {
-			dao = new OracleDAO();			
-		}
-		return dao;
-	}
+//	public static OracleDAO getInstance() {
+//		if(dao == null) {
+//			dao = new OracleDAO();			
+//		}
+//		return dao;
+//	}
 	
 	public static void main(String[] args) {		
 		OracleDAO d = new OracleDAO();

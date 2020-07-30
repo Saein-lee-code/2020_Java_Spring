@@ -1,0 +1,18 @@
+@CHARSET "UTF-8";
+.container{
+	width: 800px;	
+	margin: 0 auto;	
+}
+
+h3{	
+    background: black;
+    color: white;
+}
+
+.content p{
+	height: 300px;
+	border: 3px solid black;
+	padding: 30px;
+}
+button{ border: none; background: black; color: white; 
+	width: 80px; height: 30px; border-radius: 10px; }

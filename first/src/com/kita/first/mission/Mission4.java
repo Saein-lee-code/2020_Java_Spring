@@ -38,9 +38,6 @@ public class Mission4 {
 			System.out.println("잘 못 입력하셨습니다.");
 				
 		}
-		
-		
-
 	}
 
 }
