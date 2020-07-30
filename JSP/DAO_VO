@@ -1,0 +1,10 @@
+1. DAO ( Data Access Object ) / VO ( Value Object )
+
+- DAO (connection)
+DB 질의를 통해 데이터에 접근하는 객체
+DB의 한 테이블당 DAO 클래스를 하나씩 만들어 두면 유지보수가 쉬워집니다.
+예를 들어, User, Post 라는 두 테이블이 있을 때, User 테이블의 데이터를 접근하고 싶다면 UserDAO 클래스를 만들고, 마차간지로 Post 테이블에 접근하고 싶다면 PostDAO 클래스를 만들어서 관리를 할 수 있습니다.
+- VO (sql table 정보)
+DB의 한 테이블에 존재하는 컬럼들을 멤버 변수로 작성하여, 테이블의 컬럼 값을 java에서 객체로 다루기 위해 사용합니다.
+즉, 데이터들을 캡슐화 해서 객체로 만든 것입니다.
+예를 들어 User 테이블에 id, name, phone 컬럼이 있다면, UserVO 클래스에는 id, name, phone 멤버 변수가 존재하고 이에 대한 접근은 getter, setter로 다룹니다.
