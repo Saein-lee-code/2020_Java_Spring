@@ -1,0 +1,38 @@
+4개 내장객체를 신경써야함.
+request session pageContext(같은페이지 내에만) application
+값을 담을 수 있음.
+
+pageContext : jsp파일에서 사용. jsp임무끝나면 바로 죽음.
+request : 우리가 서버에게 요청을 했을때, 사용 -> pageContext도 만들어짐. client 한테 응답하는순간 죽음.
+Session: user가 웹서버에 들어오면 session만들어지고 웹브라우저 끄면 없어짐. user수 대로 만들어지는듯.
+application : 서버 on 하나 만들어지고 off될때 같이 죽음. 1개만 만들어짐.
+
+개인용 : session, pageContext, request
+전체용 : application.
+
+
+libraries 에 tomcat없으면
+build path -> libraries -> add external jar -> tomcat 찾아서 넣기 server runtime
+jre 없으면 jre추가
+
+
+
+<%@ denotation( 표시 )   setting/ 클래스 밖
+<% 어떤 method 에 속한다. 지역변수 
+<! 새로운 method 를 만든다. 전역변수 전역method 
+
+
+jsp 목표 : 화면에 보여주는것
+jsp 안에 html : 문자열
+<%%> library를 이용해서 java 문법을 할것.
+html + css + javascript 등등 이런것 다 jsp 프로젝트에 넣어서 함.
+++동적페이지를 만들기위해 jsp를 이용해서 만듬.
+html 은 마크업 언어. 프로그래밍 언어가 아님. JSP의 결과 => html
+
+
+String sql = " SELECT i_board, title, FROM t_board  WHERE i_board = ? ";
+?를 1 2 3 4 5 6 이런식으로 넣는 것 = 동적페이지
+(if else 문으로 넣을듯)
+
+* ;를 허용시켜주면 안됌
+injextion attack이 가해짐.
