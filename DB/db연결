@@ -1,0 +1,71 @@
+1. Oracle 11g XE 에 연결할 수있는 JDBC 라이브러리를 구한다.
+jdbc 폴더 찾아서 
+C:\app\Administrator\product\11.2.0\dbhome_1\jdbc\lib
+2. import
+
+1. 프로젝트에 직접적으로 넣는 법
+2. 참조하는 법
+
+Project right click -> Java build Path -> configure Build Path -> Add External JARs -> ojdbc6.jar 을 찾아서 추가
+
+package com.koreait.second.dao;
+import java.sql.Connection;
+import java.sql.DriverManager;
+
+public class OracleDAO {
+	public Connection getConn() {
+		String url = "jdbc:oracle:thin:@localhost:1521:Xe";
+		String userName = "hr";
+		String password = "1234";
+		
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Connection con = DriverManager.getConnection(url, userName, password);
+		System.out.println("접속성공!");
+		return con;
+		 
+	}
+}
+---------------------------------------------------------------------------------------------------
+package com.koreait.second.dao;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+
+public class OracleDAO {
+	public static void main(String[] args) {		
+		OracleDAO d = new OracleDAO();
+		try {
+			d.getConn();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}	
+	public Connection getConn() throws Exception{		
+		String url = "jdbc:oracle:thin:@localhost:1521:orcl";
+		String userName = "hr";
+		String password = "koreait2020";
+		Connection con = null;
+		
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		con = DriverManager.getConnection(url, userName, password);
+		System.out.println("접속성공!");
+		
+		// Class.forName & DriverManager 외우기		
+		return con;
+	}
+}
+
+=============================================
+예전에는 무결성을 강조 (정규화) 1, 2, 3, BCNF 정규화
+역정규화
+
+퍼포먼스(성능) vs 무결성(정규화)
+NoSQL (Select 읽기 속도에 맞춰져있음)
+카산드라, 몽고DB
+주민번호 - char 앞에 00들어가기때문
+전화번호도 010 문자열로 저장해야함
+DCL, DML, DDL
+DCL: 
+DML: CRUD
+DDL: create
