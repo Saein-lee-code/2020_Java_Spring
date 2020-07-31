@@ -67,10 +67,12 @@
 <head>
 <meta charset="UTF-8">
 <title>List</title>
+<link href="./style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-	<div>게시판!!</div>
-	<table>
+	<div class="container">
+	<h3>게시판 예제</h3>
+	<table id="table1">
 		<tr>
 			<th>No</th>
 			<th>Title</th>
@@ -87,5 +89,7 @@
 				<td><a href="/jsp/boardDetail.jsp?i_board=<%= vo.getI_board() %>"><%= vo.getTitle() %></a></td></tr>
 		<% } %>	
 	</table>
+	<a href="/jsp/boardWrite.jsp"><button>글쓰기</button></a>
+	</div>
 </body>
 </html>
