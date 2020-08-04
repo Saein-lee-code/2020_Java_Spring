@@ -68,6 +68,7 @@
 <meta charset="UTF-8">
 <title>List</title>
 <link href="./style.css" rel="stylesheet" type="text/css">
+<!-- F12 setting->network->cache disabled. ctrl shift N -> 시크릿모드 -->
 </head>
 <body>
 	<div class="container">

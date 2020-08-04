@@ -14,7 +14,7 @@
     // 그리고 자동으로 넣어줌. 실제로 파일에 삽입되있음. 
     // 파라미터 앞 final이 붙어있다. final javax.servlet.http.HttpServletRequest request
     // HttpServletRequest 클래스의 변수 (참조변수) 주솟값을 바꿀수없다. 접근은 가능. 값을 바꿀수있음.
-	String strI_board = request.getParameter("i_board"); // 5	
+	String strI_board = request.getParameter("i_board"); // 5 (PK 값)
 	String sql = " SELECT title, ctnt, i_student FROM t_board WHERE i_board = ? ";
 	int i_board = Integer.parseInt(strI_board);
 	//클래스.멤버필드 or 멤버메소드 클래스를 쓰겠다는것
@@ -78,10 +78,11 @@
 	<p><%= vo.getCtnt() %></p>
 	</div>
 	<a href="/jsp/boardList.jsp"><button>Back</button></a>
-	<a href="#"><button onclick="procDel(<%= i_board %>)">삭제</button></a>
+	<a href="#"><button onclick="proDel(<%= i_board %>)">삭제</button></a>
+	<a href="/jsp/boardMod.jsp?i_board=<%= i_board %>"><button>수정</button></a>
 	</div>
 	<script>
-		function procDel(i_board){
+		function proDel(i_board){
 			alert('i_board: ' + i_board);
 			if(confirm('삭제하시겠습니까?')){
 				location.href = '/jsp/boardDel.jsp?i_board=' + i_board;				

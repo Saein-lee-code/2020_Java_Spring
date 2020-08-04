@@ -4,9 +4,12 @@
 	margin: 0 auto;	
 }
 #table1{	
+	
 	border-collapse: collapse;
+	margin-bottom: 30px; 
+	text-align: center;
 }
-.container table th, td{ border: 1px solid black; }
+.container table th, td{ border: 1px solid black; width: 80px; }
 
 h3{	
     background: black;
@@ -21,3 +24,4 @@ h3{
 button{ border: none; background: black; color: white; 
 	width: 80px; height: 30px; border-radius: 10px; }
 
+#msg{ color: red; }
