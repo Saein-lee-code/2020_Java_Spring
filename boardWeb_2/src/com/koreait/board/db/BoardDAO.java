@@ -9,7 +9,37 @@ import java.util.List;
 
 import com.koreait.board.vo.BoardVO;
 
+// data access object
 public class BoardDAO {
+	// C create
+	public static int boardInsert(BoardVO param) {		
+		Connection con = null;
+		PreparedStatement ps = null;
+		/*
+		 * CREATE SEQUENCE SEQ_BOARD
+			INCREMENT BY 1
+			START WITH 10;		 
+		 */
+		String sql = " INSERT INTO T_BOARD (I_BOARD, TITLE, CTNT, I_STUDENT) " 
+//				" SELECT NVL(MAX(I_BOARD),0) + 1 AS COUNT, ?, ?, ? FROM T_BOARD ";
+				+ " VALUES"
+				+ " (SEQ_BOARD.NEXTVAL, ?,?,?) ";
+		int result = 0;
+		try {
+			con = DbCon.getCon();
+			ps = con.prepareStatement(sql);					
+			ps.setString(1, param.getTitle());
+			ps.setString(2, param.getCtnt());
+			ps.setInt(3, param.getI_student());
+			result = ps.executeUpdate();					
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally{
+			DbCon.close(con, ps);
+		}
+		return result;
+	} 
+	// R read
 	public static List<BoardVO> selBoardList(){
 		List<BoardVO> list = new ArrayList();
 		Connection con = null;
@@ -34,6 +64,7 @@ public class BoardDAO {
 		}
 		return list;
 	}
+	
 	// 원본을 그대로 가져오는것이 좋다
 	public static BoardVO boardDetail(final BoardVO param) {
 		BoardVO vo = null;
@@ -41,7 +72,7 @@ public class BoardDAO {
 		PreparedStatement ps = null;
 		ResultSet rs = null;		
 		String sql = " SELECT TITLE, I_STUDENT, CTNT FROM T_BOARD WHERE I_BOARD = ? ";
-		try {
+		try {	
 			con = DbCon.getCon();		
 			ps = con.prepareStatement(sql);
 			ps.setInt(1, param.getI_board());
@@ -54,6 +85,7 @@ public class BoardDAO {
 				int i_student = rs.getInt("i_student");
 				String title = rs.getNString("title");
 				String ctnt = rs.getNString("ctnt");
+				vo.setI_board(param.getI_board());
 				vo.setTitle(title);
 				vo.setI_student(i_student);
 				vo.setCtnt(ctnt);
@@ -65,31 +97,42 @@ public class BoardDAO {
 		}
 		return vo;
 	}
-
-	public static void boardInsert(BoardVO param) {		
+	
+	public static int boardUpdate(BoardVO param) {
 		Connection con = null;
 		PreparedStatement ps = null;
-		PreparedStatement ps2 = null;
-		ResultSet rs = null;
-		String sql = " INSERT INTO T_BOARD (I_BOARD, TITLE, CTNT, I_STUDENT) " + 
-				" SELECT NVL(MAX(I_BOARD),0) + 1 AS COUNT, ?, ?, ? FROM T_BOARD ";
-		String sql2 = " SELECT COUNT(*) + 1 AS COUNT FROM T_BOARD ";
+		int result = 0;
+		String sql = " UPDATE T_BOARD SET TITLE = ?, CTNT = ? WHERE I_BOARD = ? ";
 		try {
 			con = DbCon.getCon();
 			ps = con.prepareStatement(sql);
-			ps2 = con.prepareStatement(sql2);
-			rs = ps2.executeQuery();	
-			if(rs.next()) {			
-				ps.setString(1, param.getTitle());
-				ps.setString(2, param.getCtnt());
-				ps.setInt(3, param.getI_student());
-				ps.executeUpdate();
-				
-			}
-		}catch (Exception e) {
+			ps.setString(1, param.getTitle());
+			ps.setString(2, param.getCtnt());
+			ps.setInt(3, param.getI_board());
+			result = ps.executeUpdate();	
+		}catch(Exception e) {
 			e.printStackTrace();
 		}finally{
-			DbCon.close(con, ps, rs);
-		}		
-	} 
+			DbCon.close(con, ps);
+		}
+		return result;
+	}
+	
+	public static int boardDelete(int i_board) {
+		Connection con = null;
+		PreparedStatement ps = null;
+		String sql = " DELETE FROM T_BOARD WHERE I_BOARD = ? ";
+		int result = 0;
+		try {
+			con = DbCon.getCon();
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, i_board);
+			result = ps.executeUpdate();			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			DbCon.close(con, ps);
+		}
+		return result;
+	}
 }

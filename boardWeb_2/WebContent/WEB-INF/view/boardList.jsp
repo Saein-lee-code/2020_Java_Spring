@@ -13,7 +13,7 @@
 <meta charset="UTF-8">
 <title>리스트</title>
 <style> 
-	.itemRow{cursor: pointer;background-color: #ecf0f1;  }
+	table{ cursor: pointer;background-color: #ecf0f1;  }
 </style>
 </head>
 <body>

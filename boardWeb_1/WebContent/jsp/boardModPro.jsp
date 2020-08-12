@@ -12,9 +12,7 @@
 	System.out.println(strI_board);
 	Connection con = null;
 	PreparedStatement ps = null;
-	PreparedStatement ps2 = null;
-	int result = -1;
-	
+	int result = -1;	
 	try{
 		con = getCon();
 		ps = con.prepareStatement(sql);
