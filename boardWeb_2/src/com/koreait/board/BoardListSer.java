@@ -14,11 +14,8 @@ import com.koreait.board.db.BoardDAO;
 import com.koreait.board.vo.BoardVO;
 // servlet 로직담당
 // jsp 뷰담당
-
-
 @WebServlet("/boardList")
 // 이거여기서안할꺼면 xml에 적어야됌 (상당히 길게)...그래서 여기다 적는게 나음
-
 
 // 주소맵핑 (원하는 주소값) jsp container 가 실행시켜줌. get이든 post든 보내면 알아서 처리.
 // 주소값이 클래스랑 같은것 = 보안 안좋음
