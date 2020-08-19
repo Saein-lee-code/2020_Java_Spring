@@ -11,4 +11,5 @@ public class ViewResolver {
 		String jsp = String.format("/WEB-INF/jsp/%s.jsp", fileName);
 		request.getRequestDispatcher(jsp).forward(request, response);		
 	}
+
 }

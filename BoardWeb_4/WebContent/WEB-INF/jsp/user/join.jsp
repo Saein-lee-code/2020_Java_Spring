@@ -1,26 +1,31 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>회원가입</title>
-
+<style>
+	.err { color: red; font-weight: bold; }
+</style>
 </head>
 <body>
 	
 	<h1>회원가입</h1>
+	<div class="err">${msg}</div>
 	<div class="container">
 		<div>
 			<form id="frm" action="/join" method="post" onsubmit="return chk()" autocomplete="off">
-				<div><input type="text" name="user_id" placeholder="아이디" required></div>
+				<div><input type="text" name="user_id" placeholder="아이디" value="${data.user_id}" required></div>
 				<div><input type="password" name="user_pw" placeholder="비밀번호" required></div>
 				<div><input type="password" name="user_pwre" placeholder="비밀번호확인" required></div>
-				<div><input type="text" name="nm" placeholder="이름" required></div>
-				<div><input type="email" name="email" placeholder="이메일"></div>
+				<div><input type="text" name="nm" placeholder="이름" value="${data.nm}" required></div>
+				<div><input type="email" name="email" placeholder="이메일" value="${data.email}" ></div>
 				<div><input type="submit" value="회원가입"></div>
 			</form>
-		</div>
+			<div><a href="/login"><button>Back</button></a></div>
+		</div>	
 	</div>
 	<script>
 		function chk(){
@@ -51,7 +56,7 @@
 					frm.email.focus()
 					return false
 				}
-			}			
+			}	
 		}
 	</script>
 </body>
