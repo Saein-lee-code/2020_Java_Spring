@@ -33,7 +33,7 @@
 		<c:forEach items="${list}" var="item">
 			<tr class="list_style" onClick="location.href='/board/detail?i_board=${item.i_board}'">
 					<td>${ item.i_board }</td>
-					<td>${ item.title }</a></td>			
+					<td>${ item.title }</td>			
 					<td>${ item.hits }</td>
 					<td>${ item.i_user }</td>
 					<td>${ item.r_dt }</td>								
