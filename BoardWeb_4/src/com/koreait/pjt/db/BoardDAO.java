@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.koreait.pjt.vo.BoardVO;
+import com.koreait.pjt.vo.UserVO;
 
 public class BoardDAO {
 	// select
@@ -45,7 +46,30 @@ public class BoardDAO {
 		return list;
 	}
 	public static BoardVO detailBoard(final BoardVO param) {
-		BoardVO vo = null;
+		BoardVO vo = new BoardVO();
+		String sql = " SELECT T_BOARD_4.TITLE, T_USER.NM as name, TO_CHAR(T_BOARD_4.R_DT, 'YYYY/MM/DD HH24:MI') as formated_date, T_BOARD_4.HITS, T_BOARD_4.CTNT "
+				+ " FROM T_BOARD_4 INNER JOIN T_USER "
+				+ " ON (T_BOARD_4.I_USER = T_USER.I_USER) "
+				+ " WHERE T_BOARD_4.I_BOARD = ? ";
+		JdbcTemplate.executeQuery(sql, new JdbcSelectInterface() {
+			@Override
+			public void prepared(PreparedStatement ps) throws SQLException {
+				ps.setInt(1, param.getI_board());
+				ps.executeQuery();
+			}
+
+			@Override
+			public int executeQuery(ResultSet rs) throws SQLException {
+				if(rs.next()) {					
+					vo.setTitle(rs.getNString("title"));					
+					vo.setName(rs.getNString("name"));
+					vo.setR_dt(rs.getNString("formated_date"));
+					vo.setHits(rs.getInt("hits"));
+					vo.setCtnt(rs.getNString("ctnt"));
+				}
+				return 1;
+			}			
+		});
 		return vo;
 	}
 	// insert

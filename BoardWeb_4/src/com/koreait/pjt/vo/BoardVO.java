@@ -8,6 +8,8 @@ public class BoardVO {
 	private int i_user;
 	private String r_dt;
 	private String m_dt;
+	private String name;
+	
 	public int getI_board() {
 		return i_board;
 	}
@@ -41,13 +43,20 @@ public class BoardVO {
 	public String getR_dt() {
 		return r_dt;
 	}
-	public void setR_dt(String r_de) {
-		this.r_dt = r_de;
+	public void setR_dt(String r_dt) {
+		this.r_dt = r_dt;
 	}
 	public String getM_dt() {
 		return m_dt;
 	}
 	public void setM_dt(String m_dt) {
 		this.m_dt = m_dt;
+	}
+
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 }

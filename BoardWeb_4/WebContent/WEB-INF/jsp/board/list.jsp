@@ -11,7 +11,8 @@
 <title>List</title>
 <style>
 	table { border-collapse: collapse; text-align: center; }
-	td, th{ border: 1px solid black; }
+	td, th { border: 1px solid black; }
+	.list_style:hover { cursor: pointer; background: #FE7558; color: white; }
 	#id_style { font-weight: bold; }
 </style>
 </head>
@@ -30,13 +31,14 @@
 			<th>등록일시</th>
 		</tr>
 		<c:forEach items="${list}" var="item">
-			<tr>
-				<td>${ item.i_board }</td>
-				<td>${ item.title }</td>			
-				<td>${ item.hits }</td>
-				<td>${ item.i_user }</td>
-				<td>${ item.r_dt }</td>				
-			</tr>		
+			<tr class="list_style" onClick="location.href='/board/detail?i_board=${item.i_board}'">
+					<td>${ item.i_board }</td>
+					<td>${ item.title }</a></td>			
+					<td>${ item.hits }</td>
+					<td>${ item.i_user }</td>
+					<td>${ item.r_dt }</td>								
+			</tr>
+					
 		</c:forEach>
 	</table>
 </body>
