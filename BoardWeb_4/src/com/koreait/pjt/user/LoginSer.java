@@ -19,8 +19,16 @@ import com.koreait.pjt.vo.UserVO;
 public class LoginSer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		ViewResolver.forward("user/login", request, response);
+		HttpSession hs = request.getSession();
+		UserVO loginUser = (UserVO)hs.getAttribute(Const.LOGIN_USER);
+		System.out.println("ip: " + request.getRemoteAddr());
+		if(loginUser != null) {			
+			response.sendRedirect("board/list");
+		}else {
+			ViewResolver.forward("user/login", request, response);
+		}
 	}
+	
 	// 0 에러발생(db) 1 로그인성공 2 비밀번호 틀림 3 아이디없음
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String user_id = request.getParameter("user_id");
