@@ -18,7 +18,7 @@
 </head>
 <body>
 	<h1>리스트</h1>
-	<div><span id="id_style">${ loginUser.nm }</span>님, 환영합니다!</div>
+	<div><span id="id_style">${ loginUser.nm }</span>님, 환영합니다!<a href="/user/logout">로그아웃</a></div>
 	<div>
 		<a href="/board/regmod">글쓰기</a>
 	</div>
@@ -36,9 +36,8 @@
 					<td>${ item.title }</td>			
 					<td>${ item.hits }</td>
 					<td>${ item.i_user }</td>
-					<td>${ item.r_dt }</td>								
-			</tr>
-					
+					<td>${ item.r_dt }</td>
+			</tr>					
 		</c:forEach>
 	</table>
 </body>

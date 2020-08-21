@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import com.koreait.pjt.db.BoardDAO;
 import com.koreait.pjt.Const;
+import com.koreait.pjt.MyUtils;
 import com.koreait.pjt.ViewResolver;
 import com.koreait.pjt.vo.BoardVO;
 
@@ -20,6 +21,10 @@ import com.koreait.pjt.vo.BoardVO;
 public class BoardListSer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		if(MyUtils.isLogout(request)) {
+			response.sendRedirect("/login");
+			return;
+		}
 		request.setAttribute("list", BoardDAO.selBoardList());
 		ViewResolver.forwardLoginChk("board/list", request, response);
 	}		

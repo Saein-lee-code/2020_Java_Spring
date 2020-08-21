@@ -9,7 +9,7 @@ import javax.servlet.http.HttpSession;
 import com.koreait.pjt.vo.UserVO;
 
 public class MyUtils {	
-	// return true : 로그인 된 안된 상태
+	// return true : 로그인 안된 상태
 	// return false : 로그인 된 상태
 	public static boolean isLogout(HttpServletRequest request) throws IOException {		
 		HttpSession hs = request.getSession();
@@ -17,6 +17,20 @@ public class MyUtils {
 			return true;			
 		}
 		return false;
+	}
+
+	public static int parseStrToInt(String s, int n) {
+		try {		
+			return Integer.parseInt(s);
+		}catch(Exception e) {
+			return n;
+		}
+	}
+	
+
+	public static UserVO getLoginUser(HttpServletRequest request) {
+		HttpSession hs = request.getSession();
+		return (UserVO)hs.getAttribute(Const.LOGIN_USER);
 	}
     public static String encryptString(String str){	
        String sha = "";	
