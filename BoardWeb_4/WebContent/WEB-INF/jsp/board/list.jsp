@@ -14,6 +14,7 @@
 	td, th { border: 1px solid black; }
 	.list_style:hover { cursor: pointer; background: #FE7558; color: white; }
 	#id_style { font-weight: bold; }
+	#date_style { width: 200px; }
 </style>
 </head>
 <body>
@@ -28,7 +29,7 @@
 			<th>제목</th>
 			<th>조회수</th>
 			<th>작성자</th>
-			<th>등록일시</th>
+			<th id="date_style">등록일시</th>
 		</tr>
 		<c:forEach items="${list}" var="item">
 			<tr class="list_style" onClick="location.href='/board/detail?i_board=${item.i_board}'">

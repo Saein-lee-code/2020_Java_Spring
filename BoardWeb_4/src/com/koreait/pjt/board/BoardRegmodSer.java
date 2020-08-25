@@ -29,7 +29,7 @@ public class BoardRegmodSer extends HttpServlet {
 			int i_board = MyUtils.parseStrToInt(request.getParameter("i_board"), 0);
 			BoardVO param = new BoardVO();
 			param.setI_board(i_board);
-			request.setAttribute("data", BoardDAO.detailBoard(i_board));			
+			request.setAttribute("data", BoardDAO.detailBoard(param));			
 		}
 		ViewResolver.forward("board/regmod", request, response);
 	}

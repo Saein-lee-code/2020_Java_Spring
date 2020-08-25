@@ -12,7 +12,11 @@
 	th, td{ border: 1px solid black; }
 	th{ background-color: skyblue; color: white; }
 	#ctnt_style{ height: 200px; padding-left: 20px; text-align: left; }
+	#likes { width: 20px; border-left: none; color: #F15285; }
+	#likes:hover{ cursor: pointer; }
+
 </style>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
 	<div>상세페이지</div>
@@ -32,25 +36,43 @@
 	</c:if>	
 	<table>
 		<tr>
-			<th>제목</th>
-			<td> ${ data.title } </td>
+			<th>제목</th>			
+			<td> ${ data.title }</td>
+			<td id="likes" onclick="toggleLike(${data.yn_like})">
+				<c:if test="${ data.yn_like == 0 }">
+					<span class="material-icons">
+						favorite_border
+					</span>
+				</c:if>
+				<c:if test="${ data.yn_like == 1 }">
+					<span class="material-icons">
+						favorite
+					</span>
+				</c:if>				
+			</td>
 			<th>작성자</th>
 			<td> ${ data.nm } </td>
 		</tr>
 		<tr>			
 			<th>작성일시</th>
-			<td> ${ data.r_dt } </td>
+			<td colspan="2" style="width: 200px;"> ${ data.r_dt } </td>
 			<th>조회수</th>
 			<td>${ data.hits }</td>
 		<tr>
 		<tr>
-			<td colspan="4" id="ctnt_style">${ data.ctnt }</td>
+			<td colspan="5" id="ctnt_style">${ data.ctnt }</td>
 		</tr>	
 	</table>
 	<script>
 		function submitDel() {
 			delFrm.submit()
 		}
+		
+		function toggleLike(yn_like){
+			location.href="/board/toggleLike?i_board=${data.i_board}&yn_like=" + yn_like;
+		}
+	
+		
 	</script>
 </body>
 </html>

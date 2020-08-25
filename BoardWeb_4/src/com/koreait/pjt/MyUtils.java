@@ -18,7 +18,11 @@ public class MyUtils {
 		}
 		return false;
 	}
-
+	
+	public static int parseStrToInt(String s) {
+		return parseStrToInt(s, 0);
+	}
+	
 	public static int parseStrToInt(String s, int n) {
 		try {		
 			return Integer.parseInt(s);
@@ -26,8 +30,6 @@ public class MyUtils {
 			return n;
 		}
 	}
-	
-
 	public static UserVO getLoginUser(HttpServletRequest request) {
 		HttpSession hs = request.getSession();
 		return (UserVO)hs.getAttribute(Const.LOGIN_USER);

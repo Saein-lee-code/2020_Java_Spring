@@ -9,6 +9,8 @@ public class BoardVO {
 	private String r_dt;
 	private String m_dt;
 	
+
+
 	public int getI_board() {
 		return i_board;
 	}
@@ -51,4 +53,5 @@ public class BoardVO {
 	public void setM_dt(String m_dt) {
 		this.m_dt = m_dt;
 	}
+	
 }
