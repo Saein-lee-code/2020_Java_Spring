@@ -9,6 +9,9 @@ import javax.servlet.http.HttpSession;
 import com.koreait.pjt.vo.UserVO;
 
 public class MyUtils {	
+	public static int getIntParameter(HttpServletRequest request, String keyNum) {
+		return parseStrToInt(request.getParameter(keyNum));
+	}
 	// return true : 로그인 안된 상태
 	// return false : 로그인 된 상태
 	public static boolean isLogout(HttpServletRequest request) throws IOException {		

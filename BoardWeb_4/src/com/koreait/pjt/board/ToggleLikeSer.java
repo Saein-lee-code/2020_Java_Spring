@@ -24,7 +24,6 @@ public class ToggleLikeSer extends HttpServlet {
 		String strYn_like = request.getParameter("yn_like");
 		int yn_like = MyUtils.parseStrToInt(strYn_like);
 		// 0이 넘어가는 경우 : null일때, 숫자+문자 같이 들어가있을 때(예외)
-		System.out.println(yn_like);
 		UserVO loginUser = MyUtils.getLoginUser(request);		
 		BoardVO param = new BoardVO();
 		param.setI_board(i_board);
