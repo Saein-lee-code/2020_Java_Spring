@@ -18,7 +18,7 @@ import com.koreait.pjt.vo.UserVO;
 @WebServlet("/board/cmt")
 public class BoardCmtSer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+     
 	// 댓글 삭제
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
 		String strI_board = request.getParameter("i_board");
@@ -49,7 +49,9 @@ public class BoardCmtSer extends HttpServlet {
 			case "0": // 등록
 				BoardCmtDAO.insCmt(param);
 				break;
-			default: // 수정
+			default: // 수정 (수정일자 변경)
+				param.setI_cmt(MyUtils.parseStrToInt(strI_cmt));
+				BoardCmtDAO.updCmt(param);
 				break;
 		}		
 		response.sendRedirect("/board/detail?i_board=" + strI_board);

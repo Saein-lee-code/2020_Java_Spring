@@ -12,15 +12,27 @@ import com.koreait.pjt.vo.BoardVO;
 public class BoardDAO {
 
 	// select
-	public static List<BoardVO> selBoardList() {
+	public static List<BoardDomain> selBoardList(int sIndex, int eIndex) {
 		// 주소값 고정, 값을 추가하거나 바꿀순 있음.
-		List<BoardVO> list = new ArrayList();
-		String sql = " SELECT I_BOARD, TITLE, HITS, I_USER, R_DT FROM T_BOARD_4 " + " ORDER BY I_BOARD ";
+		List<BoardDomain> list = new ArrayList();
+//		String sql = " SELECT I_BOARD, TITLE, HITS, I_USER, R_DT FROM T_BOARD_4 " + " ORDER BY I_BOARD ";
 		// ? 가없기때문에 prepared는 필요없지만 구현은 해야됌(비워둠)
+		String sql = " SELECT * " 
+			+ " FROM (SELECT A.*, ROWNUM RN "
+			    + " FROM ("
+			    	  + " SELECT A.I_BOARD, A.TITLE, A.HITS, A.R_DT, B.NM "
+				          + " FROM T_BOARD_4 A "
+				          + " INNER JOIN T_USER B"
+				          + " ON A.I_USER = B.I_USER "
+				          + " ORDER BY I_BOARD desc"
+				 + " ) A "
+			    + " WHERE ROWNUM <= ?) "
+			+ " WHERE RN > ? ";
 		JdbcTemplate.executeQuery(sql, new JdbcSelectInterface() {
-
 			@Override
 			public void prepared(PreparedStatement ps) throws SQLException {
+				ps.setInt(1, eIndex);
+				ps.setInt(2, sIndex);
 			}
 
 			@Override
@@ -28,15 +40,15 @@ public class BoardDAO {
 				while (rs.next()) {
 					int i_board = rs.getInt("i_board");
 					String title = rs.getNString("title");
-					int hits = rs.getInt("hits");
-					int i_user = rs.getInt("i_user");
+					int hits = rs.getInt("hits");					
+					String nm = rs.getNString("nm");
 					String r_dt = rs.getNString("r_dt");
 
-					BoardVO vo = new BoardVO();
+					BoardDomain vo = new BoardDomain();
 					vo.setI_board(i_board);
 					vo.setTitle(title);
-					vo.setHits(hits);
-					vo.setI_user(i_user);
+					vo.setHits(hits);					
+					vo.setNm(nm);
 					vo.setR_dt(r_dt);
 
 					list.add(vo);
@@ -83,7 +95,26 @@ public class BoardDAO {
 		
 		return result;
 	}
+	// 페이징 숫자 가져오기
+		public static int selPagingCnt(final BoardDomain param) {
+			String sql = " SELECT CEIL(COUNT(I_BOARD) / ?) FROM T_BOARD_4 ";
+			return JdbcTemplate.executeQuery(sql, new JdbcSelectInterface() {
 
+				@Override
+				public void prepared(PreparedStatement ps) throws SQLException {
+					ps.setInt(1, param.getRecord_cnt());
+				}
+				// 스칼라 1행1열만 있는것
+				@Override
+				public int executeQuery(ResultSet rs) throws SQLException {
+					if(rs.next()) {
+						return rs.getInt(1);
+					}
+					return 0;
+				}
+				
+			});		
+		}
 	// insert
 	public static int insBoard(BoardVO param) {
 		String sql = " INSERT INTO t_board_4 " + " (i_board, title, ctnt, i_user) " + " VALUES "

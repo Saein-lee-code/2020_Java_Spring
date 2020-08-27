@@ -73,7 +73,8 @@
 				<input type="hidden" name="i_board" value="${ data.i_board }">
 				<div>
 					<input type="text" name="cmt" placeholder="댓글내용">
-					<input type="submit" value="전송">
+					<input type="submit" id="cmtSubmit" value="전송"> <!-- 등록/수정 -->
+					<input type="button" value="취소" onclick="clkCmtCancel()">					
 				</div>
 				
 			</form>
@@ -81,18 +82,21 @@
 			<tr>
 				<th>내용</th>
 				<th>글쓴이</th>
-				<th colspan="2">등록일</th>				
+				<th>등록일</th>
+				<th>수정일</th>
+				<th>비 고</th>				
 			</tr>
-			<!-- page context에 담김. -->
+			<!-- page context에 담김. -->			
 				<c:forEach items="${ cmt_data }" var="item">					
 				<tr>
 					<td>${ item.ctnt }</td>				
 					<td class="cmt_writer">${ item.nm }</td>
-					<td>${ item.r_dt }</td>					
+					<td style="width:213px">${ item.r_dt }</td>	
+					<td style="width:213px">${ item.m_dt == item.r_dt ? '' : item.m_dt}</td>				
 					<td>
 						<c:if test="${ item.i_user == loginUser.i_user }">
-							<a href="/board/cmt?i_cmt=${ item.i_cmt }&i_board=${ data.i_board }"><button id="delBtn">삭제</button></a>
-							<a href="/board/cmt?i_cmt=${ item.i_cmt }&i_board=${ data.i_board }"><button>수정</button></a>
+							<a href="/board/cmt?i_cmt=${ item.i_cmt }&i_board=${ data.i_board }"><button onclick="clkCmtDel(${ item.i_cmt })">삭제</button></a>
+							<button onclick="clkCmtMod(${ item.i_cmt }, `${ item.ctnt }`)">수정</button>
 						</c:if>
 					</td>
 				</tr>
@@ -103,10 +107,25 @@
 	</div>
 	
 	<script>
+		function clkCmtCancel(){
+			cmtFrm.i_cmt.value = 0;
+			cmtFrm.cmt.value = '';
+			cmtSubmit.value = '전송';			
+		}
+		function clkCmtDel(i_cmt){
+			if(confirm('삭제 하시겠습니까?')){
+				location.href = '/board/cmt?i_board=${data.i_board}&i_cmt=' + i_cmt;
+			}
+		}
 		function submitDel() {
 			delFrm.submit()
 		}
-			
+		// 댓글 수정
+		function clkCmtMod(i_cmt, ctnt){			
+			cmtFrm.i_cmt.value = i_cmt;
+			cmtFrm.cmt.value = ctnt;
+			cmtSubmit.value = '수정';
+		}
 		function toggleLike(yn_like){
 			location.href="/board/toggleLike?i_board=${data.i_board}&yn_like=" + yn_like;
 		}
