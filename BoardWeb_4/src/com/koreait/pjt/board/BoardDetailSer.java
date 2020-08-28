@@ -37,7 +37,7 @@ public class BoardDetailSer extends HttpServlet {
 		// set한적이 없으니까
 		Integer readI_user = (Integer)application.getAttribute("read_" + strI_board);
 		System.out.println(readI_user);
-
+		
 		if(readI_user == null || readI_user != loginUser.getI_user()) {
 			BoardDAO.addHits(i_board);
 			application.setAttribute("read_" + strI_board, loginUser.getI_user());

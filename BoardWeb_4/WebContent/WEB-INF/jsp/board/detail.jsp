@@ -9,9 +9,9 @@
 <title>상세페이지</title>
 <style>
 	.container{ width: 800px; margin: 0 auto; }
-	table{ border-collapse: collapse; width:800px; }
-	th, td{ border: 1px solid black; }
-	th{ background-color: skyblue; color: white; }
+	table{ border-collapse: collapse; width:800px; margin-top:30px; }
+	th, td{ border: 1px solid #ccc; }
+	th{ background-color: #FE7558; color: white; }
 	#cmt_table{ margin: 30px auto 0; width:800px; }
 	.cmt_writer{ font-weight: bold; text-align: center; }
 	#ctnt_style{ height: 200px; padding-left: 20px; text-align: left; }
@@ -23,7 +23,7 @@
 </head>
 <body>
 	<div class="container">상세페이지
-		<a href="/board/list"><button>Back</button></a><br>
+		<a href="/board/list?page=${ param.page }&record_cnt=${ param.record_cnt }&searchText=${ param.searchText }"><button>Back</button></a><br>
 		<!-- session 객체에서 만듬 . login할때 생김 브라우저끄면 session 소멸  -->
 		<c:if test = "${ loginUser.i_user == data.i_user }">
 			<!-- 쿼리스트링 보내야함 

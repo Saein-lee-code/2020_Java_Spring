@@ -9,63 +9,119 @@
 <head>
 <meta charset="UTF-8">
 <title>List</title>
-<style>
-	.container{ width: 800px; margin: 0 auto; text-align: center; }	
-	table { border-collapse: collapse; text-align: center; width: 800px; }
-	td, th { border: 1px solid black; }
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet"><style>
+	body{ font-family: 'Nanum Gothic', sans-serif; }
+	.container{ position: relative; width: 800px; margin: 0 auto; text-align: center; }
+	a{ text-decoration: none; color: black; font-size: 18px; }
+	#user_div{ position: relative; }
+	.logout_write { position: absolute; right: 0px; }
+	.logout_write a{ font-size: 0.9em; padding: 10px 0; }
+	.logout_write a:hover { font-weight: bold; }
+		
+	#homeBtn { position: absolute; left:0; top: 50px; }
+	
+	table { margin-top: 30px; border-collapse: collapse; text-align: center; width: 800px; }	
+	td, th { border: 1px solid #eee; }
+	td{ font-size:0.9em; padding: 10px 0; }
+	
+	#selFrm { margin-top: 20px; }
+	#th_style { background-color: orange; color: white; height: 35px; }
 	.list_style:hover { cursor: pointer; background: #FE7558; color: white; }
 	#id_style { font-weight: bold; }
 	#date_style { width: 200px; }
-	a{ text-decoration: none; color: black; font-size: 18px; }
+	.select_style { background: #FDEDEC; }
+	#search_style{ margin-top: 30px; }
+	
+	.paging_style{ margin: 30px 0; }
 	.page_style{ margin-right: 10px; font-size: 18px; text-align: center;  }
-	.page_style:hover{ font-weight: bold; }
-	#accent { font-weight: bold; color: red; }
+	.page_style a:hover{ font-weight: bold; color: red; }
+	#accent a { font-weight: bold; color: red; }
+	
+	.btnStyle {	box-shadow:inset 0px 34px 0px -15px #b54b3a;
+				background-color:#a73f2d;
+				border:1px solid #ccc;
+				border-radius: 5px; 
+				display:inline-block;
+				cursor:pointer;
+				color:#ffffff;
+				font-family:Arial;
+				font-size:15px;
+				font-weight:bold;
+				padding:2px 10px;
+				text-decoration:none;
+				text-shadow:0px -1px 0px #7a2a1d;
+	}
+	.btnStyle:hover { background-color:#b34332; }
+	.btnStyle:active { position:relative; top:1px; }
+	#selFrm{ position: absolute; bottom: 80px; left: 0; }
 </style>
 </head>
 <body>
 	<div class="container">
-		<h1>리스트</h1>
-		<div><span id="id_style">${ loginUser.nm }</span>님, 환영합니다!<a href="/logout">로그아웃</a></div>
-		<a href="/board/regmod">글쓰기</a>
-		<div>
+		<header>
+			<h1>리스트</h1>
+			<div id="user_div"><span id="id_style">${ loginUser.nm }</span>님, 환영합니다!
+				<div class="logout_write"><a href="/logout">로그아웃</a> / <a href="/board/regmod">글쓰기</a></div>
+			</div>
+		</header>
+		
+		<div id="listContainer">
+			<a id="homeBtn" href="/board/list"><input type="button" class="btnStyle" value="목록"></a>
+			<table>
+				<tr id="th_style">
+					<th style="width:50px;">번호</th>
+					<th style="width:385px;">제목</th>
+					<th>조회수</th>
+					<th>작성자</th>
+					<th id="date_style">등록일시</th>
+				</tr>
+				<c:forEach items="${list}" var="item">
+					<tr class="list_style" onClick="location.href='/board/detail?page=${ page }&record_cnt=${ param.record_cnt }&i_board=${item.i_board}&searchText=${ searchText }'">
+							<td>${ item.i_board }</td>
+							<td>${ item.title }</td>			
+							<td>${ item.hits }</td>
+							<td>${ item.nm }</td>
+							<td>${ item.r_dt }</td>
+					</tr>					
+				</c:forEach>
+			</table>
+		</div>
+		<div id="recordCountContainer">
 			<form id="selFrm" action ="/board/list">
-				<input type="hidden" name="page" value="${ param.page == null ? 1 : param.page }">
+				<input type="hidden" name="page" value="${ page }">
+				<input type="hidden" name="searchText" value="${ searchText }">
 				게시글 수 :
-				<select name="record_cnt"  onchange="changeRecordCnt()">
+				<select class="select_style" name="record_cnt"  onchange="changeRecordCnt()" style="height: 20px;">
 					<c:forEach begin="10" end ="30" step="10" var="item">
-						<option value="${item}">${item}개</option>
+						<c:choose>
+							<c:when test="${ param.record_cnt == item }">
+								<option value="${ item }" selected>${ item }개
+							</c:when>
+							<c:otherwise>
+								<option value="${item}">${item}개</option>	
+							</c:otherwise>
+						</c:choose>						
 					</c:forEach>
 				</select>
 			</form>			
 		</div>
-		<table>
-			<tr>
-				<th style="width:60px;">번호</th>
-				<th style="width:385px;">제목</th>
-				<th>조회수</th>
-				<th>작성자</th>
-				<th id="date_style">등록일시</th>
-			</tr>
-			<c:forEach items="${list}" var="item">
-				<tr class="list_style" onClick="location.href='/board/detail?i_board=${item.i_board}'">
-						<td>${ item.i_board }</td>
-						<td>${ item.title }</td>			
-						<td>${ item.hits }</td>
-						<td>${ item.nm }</td>
-						<td>${ item.r_dt }</td>
-				</tr>					
-			</c:forEach>
-		</table>
+		<div id="searchContainer">
+			<form id="search_style" action="/board/list">
+				<input type="text" name="searchText" placeholder="검색어를 입력하세요." value="${ searchText }"> 
+				<input type="Submit" class="btnStyle" value="검색">
+			</form>
+		</div>
+		
 		<div class="paging_style">
 			<c:forEach begin="1" end="${ pagingCnt }" var="item">
 			<span class="page_style">
 				<c:choose>					
-						<c:when test="${ param.page == item || (param.page == null && item == 1)}">
-							<span id="accent">${ item }</span>
+						<c:when test="${ page == item }">
+							<span id="accent"><a href="/board/list?page=${ item }&record_cnt=${ param.record_cnt }&searchText=${ searchText }">${ item }</a></span>
 						</c:when>
-						<c:otherwise>
-							<a class="address" href="/board/list?page=${ item }">${ item }</a>
-						</c:otherwise>					
+						<c:when test="${ page != item }">
+							<span><a class="address" href="/board/list?page=${ item }&record_cnt=${ param.record_cnt }&searchText=${ searchText }">${ item }</a></span>
+						</c:when>					
 				</c:choose>
 			</span>									
 			</c:forEach>

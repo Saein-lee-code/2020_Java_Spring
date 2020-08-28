@@ -12,7 +12,7 @@ import com.koreait.pjt.vo.BoardVO;
 public class BoardDAO {
 
 	// select
-	public static List<BoardDomain> selBoardList(int sIndex, int eIndex) {
+	public static List<BoardDomain> selBoardList(BoardDomain param) {
 		// 주소값 고정, 값을 추가하거나 바꿀순 있음.
 		List<BoardDomain> list = new ArrayList();
 //		String sql = " SELECT I_BOARD, TITLE, HITS, I_USER, R_DT FROM T_BOARD_4 " + " ORDER BY I_BOARD ";
@@ -20,10 +20,11 @@ public class BoardDAO {
 		String sql = " SELECT * " 
 			+ " FROM (SELECT A.*, ROWNUM RN "
 			    + " FROM ("
-			    	  + " SELECT A.I_BOARD, A.TITLE, A.HITS, A.R_DT, B.NM "
+			    	  + " SELECT A.I_BOARD, A.TITLE, A.I_USER, A.HITS, A.R_DT, B.NM "
 				          + " FROM T_BOARD_4 A "
 				          + " INNER JOIN T_USER B"
-				          + " ON A.I_USER = B.I_USER "
+				          + " ON A.I_USER = B.I_USER"
+				          + " WHERE A.TITLE LIKE ? "
 				          + " ORDER BY I_BOARD desc"
 				 + " ) A "
 			    + " WHERE ROWNUM <= ?) "
@@ -31,8 +32,9 @@ public class BoardDAO {
 		JdbcTemplate.executeQuery(sql, new JdbcSelectInterface() {
 			@Override
 			public void prepared(PreparedStatement ps) throws SQLException {
-				ps.setInt(1, eIndex);
-				ps.setInt(2, sIndex);
+				ps.setNString(1, param.getSearchText());
+				ps.setInt(2, param.geteIdx());
+				ps.setInt(3, param.getsIdx());
 			}
 
 			@Override
@@ -40,14 +42,16 @@ public class BoardDAO {
 				while (rs.next()) {
 					int i_board = rs.getInt("i_board");
 					String title = rs.getNString("title");
-					int hits = rs.getInt("hits");					
+					int hits = rs.getInt("hits");	
+					int i_user = rs.getInt("i_user");	
 					String nm = rs.getNString("nm");
 					String r_dt = rs.getNString("r_dt");
 
 					BoardDomain vo = new BoardDomain();
 					vo.setI_board(i_board);
 					vo.setTitle(title);
-					vo.setHits(hits);					
+					vo.setHits(hits);	
+					vo.setI_user(i_user);
 					vo.setNm(nm);
 					vo.setR_dt(r_dt);
 
@@ -97,12 +101,15 @@ public class BoardDAO {
 	}
 	// 페이징 숫자 가져오기
 		public static int selPagingCnt(final BoardDomain param) {
-			String sql = " SELECT CEIL(COUNT(I_BOARD) / ?) FROM T_BOARD_4 ";
+			String sql = " SELECT CEIL(COUNT(I_BOARD) / ?) FROM T_BOARD_4 "
+					+ " WHERE TITLE LIKE ? ";
+			//'%' || ? || '%'
 			return JdbcTemplate.executeQuery(sql, new JdbcSelectInterface() {
 
 				@Override
 				public void prepared(PreparedStatement ps) throws SQLException {
 					ps.setInt(1, param.getRecord_cnt());
+					ps.setNString(2, param.getSearchText());
 				}
 				// 스칼라 1행1열만 있는것
 				@Override
