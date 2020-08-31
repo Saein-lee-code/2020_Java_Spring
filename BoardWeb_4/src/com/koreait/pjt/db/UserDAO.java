@@ -23,6 +23,18 @@ public class UserDAO {
 			}			
 		});
 	}
+	public static int insProfileImg(UserVO param) {
+		String sql = " UPDATE T_USER SET PROFILE_IMG = ? "
+				+ " WHERE I_USER = ? ";
+		return JdbcTemplate.executeUpdate(sql, new JdbcUpdateInterface() {
+
+			@Override
+			public void update(PreparedStatement ps) throws SQLException {
+				ps.setNString(1, param.getProfile_img());
+				ps.setInt(2, param.getI_user());
+			}			
+		});
+	}
 	public static int insUser(UserVO param) {		
 		String sql = " INSERT INTO t_user "
 				+ " (i_user, user_id, user_pw, nm, email) "
@@ -70,6 +82,69 @@ public class UserDAO {
 				ps.setNString(1, param.getUser_id());
 				ps.executeQuery();
 			}
+		});
+	}
+	
+	public static UserVO selUser(int i_user) {
+		String sql = " SELECT USER_ID, NM, PROFILE_IMG, EMAIL, R_DT "
+				+ " FROM T_USER WHERE I_USER = ? ";
+		UserVO result = new UserVO();
+		JdbcTemplate.executeQuery(sql, new JdbcSelectInterface() {
+			@Override
+			public void prepared(PreparedStatement ps) throws SQLException {
+				ps.setInt(1, i_user);
+			}
+
+			@Override
+			public int executeQuery(ResultSet rs) throws SQLException {
+				if(rs.next()) {
+					result.setUser_id(rs.getNString("user_id"));
+					result.setNm(rs.getNString("nm"));
+					result.setProfile_img(rs.getNString("profile_img"));
+					result.setEmail(rs.getNString("email"));
+					result.setR_dt(rs.getNString("r_dt"));
+				}				
+				return 1;
+			}			
+		});
+		return result;
+	}
+	
+	public static int updUser(UserVO param) {
+		StringBuilder sb = new StringBuilder();
+//		String sql = " UPDATE T_USER "
+//				+ " SET M_DT = SYSDATE ";
+		sb.append("UPDATE t_user set i_user = ");
+		sb.append(param.getI_user());
+		if(param.getUser_pw() != null) {
+			sb.append(" , user_pw = '");
+			sb.append(param.getUser_pw());
+			sb.append("' ");
+		}
+		if(param.getNm() != null) {
+			sb.append(" , nm = '");
+			sb.append(param.getNm());
+			sb.append("' ");
+		}
+		if(param.getEmail() != null) {
+			sb.append(" , email = '");
+			sb.append(param.getEmail());
+			sb.append("' ");
+		}
+		if(param.getProfile_img() != null) {
+			sb.append(" , profile_img = '");
+			sb.append(param.getProfile_img());
+			sb.append("' ");
+		}
+		sb.append(" WHERE I_USER = ");
+		sb.append(param.getI_user());
+		
+		
+		System.out.println("sb: " + sb.toString());
+		return JdbcTemplate.executeUpdate(sb.toString(), new JdbcUpdateInterface() {
+			@Override
+			public void update(PreparedStatement ps) throws SQLException {
+			}			
 		});
 	}
 }

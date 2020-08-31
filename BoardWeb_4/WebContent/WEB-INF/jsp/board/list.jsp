@@ -61,6 +61,7 @@
 		<header>
 			<h1>리스트</h1>
 			<div id="user_div"><span id="id_style">${ loginUser.nm }</span>님, 환영합니다!
+				<a href="/profile">프로필</a>
 				<div class="logout_write"><a href="/logout">로그아웃</a> / <a href="/board/regmod">글쓰기</a></div>
 			</div>
 		</header>
