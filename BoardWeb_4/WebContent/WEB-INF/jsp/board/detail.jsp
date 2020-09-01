@@ -11,13 +11,18 @@
 	.container{ width: 800px; margin: 0 auto; }
 	table{ border-collapse: collapse; width:800px; margin-top:30px; }
 	th, td{ border: 1px solid #ccc; }
-	th{ background-color: #FE7558; color: white; }
+	th{ background-color: #FE7558; color: white; height: 45px; }
+	td{ padding-left: 10px; }
 	#cmt_table{ margin: 30px auto 0; width:800px; }
 	.cmt_writer{ font-weight: bold; text-align: center; }
 	#ctnt_style{ height: 200px; padding-left: 20px; text-align: left; }
-	#likes { width: 20px; border-left: none; color: #F15285; }
+	#likes { width: 40px; border-left: none; color: #F15285; padding-right:10px; }
 	#likes:hover{ cursor: pointer; }
-
+	.prf_img{ width: 40px; height: 40px; border-radius: 50%; position:absolute; top:4px; right: 20px;  }
+	.title_cmt_style { font-weight: bold; }
+	.notice_like { color:#F15285; font-size: 0.9em; position: relative;
+   				   left: 30px; top: 20px; 
+    				text-shadow: 1px 1px 4px lightcoral; }
 </style>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
@@ -36,25 +41,59 @@
 				<input type="hidden" name="i_board" value="${data.i_board}">						
 				<a href="#" onclick="submitDel()">삭제</a>
 			</form>
-		</c:if>		
+		</c:if>
+		
+		<c:if test="${ data.yn_like == 1 }">
+			<span class="notice_like">
+				<span class="material-icons">favorite</span>
+				내가 좋아요를 누른 글입니다.
+			</span>
+		</c:if>								
 		<table>
 			<tr>
 				<th>제목</th>			
-				<td> ${ data.title }</td>
-				<td id="likes" onclick="toggleLike(${data.yn_like})">
+				<td> ${ data.title }<span class="title_cmt_style"> [${ data.cmt_count }]</span></td>
+				<td id="likes" onclick="toggleLike(${ data.yn_like })">
 					<c:if test="${ data.yn_like == 0 }">
 						<span class="material-icons">
 							favorite_border
-						</span>
+						</span>						
 					</c:if>
 					<c:if test="${ data.yn_like == 1 }">
 						<span class="material-icons">
 							favorite
 						</span>
-					</c:if>				
+					</c:if>
+					${ data.like_count }
 				</td>
+				
 				<th>작성자</th>
-				<td> ${ data.nm } </td>
+				<td style="width: 120px; position:relative; "> ${ data.nm } 
+				<c:choose>
+					<c:when test="${loginUser.i_user == data.i_user}">
+						<a href="/profile">
+							<c:choose>
+								<c:when test="${ data.profile_img != null }">
+									<img class="prf_img"  src="/img/user/${ loginUser.i_user }/${ data.profile_img }">
+								</c:when>
+								<c:otherwise>
+									<img class="prf_img"  src="/img/default_profile.jpg">
+								</c:otherwise>							
+							</c:choose>
+						</a>
+					</c:when>
+					<c:otherwise>
+						<c:choose>
+								<c:when test="${ data.profile_img != null }">
+									<img class="prf_img"  src="/img/user/${ data.i_user }/${ data.profile_img }">
+								</c:when>
+								<c:otherwise>
+									<img class="prf_img"  src="/img/default_profile.jpg">
+								</c:otherwise>							
+							</c:choose>
+					</c:otherwise>
+				</c:choose>
+				</td>
 			</tr>
 			<tr>			
 				<th>작성일시</th>

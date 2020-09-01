@@ -15,6 +15,7 @@
 <body>
 	<div class="container">
 		<h1>프로필</h1>
+		<a href="/board/list"><button>Home</button></a>
 		<div>
 			<div>
 				<c:choose>

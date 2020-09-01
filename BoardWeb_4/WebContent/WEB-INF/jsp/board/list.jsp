@@ -54,6 +54,9 @@
 	.btnStyle:hover { background-color:#b34332; }
 	.btnStyle:active { position:relative; top:1px; }
 	#selFrm{ position: absolute; bottom: 80px; left: 0; }
+	.pf_img { display: inline-block; position: relative; top: 5px; }
+	.pf_img img{ width: 40px; height: 40px; border-radius: 50%; }
+	.title_cmt_style{ font-weight: bold; }
 </style>
 </head>
 <body>
@@ -72,16 +75,29 @@
 				<tr id="th_style">
 					<th style="width:50px;">번호</th>
 					<th style="width:385px;">제목</th>
-					<th>조회수</th>
+					<th style="width: 60px;">조회수</th>
 					<th>작성자</th>
 					<th id="date_style">등록일시</th>
 				</tr>
 				<c:forEach items="${list}" var="item">
 					<tr class="list_style" onClick="location.href='/board/detail?page=${ page }&record_cnt=${ param.record_cnt }&i_board=${item.i_board}&searchText=${ searchText }'">
 							<td>${ item.i_board }</td>
-							<td>${ item.title }</td>			
+							<td>${ item.title } <span class="title_cmt_style">[${ item.cmt_count }]</span></td>			
 							<td>${ item.hits }</td>
-							<td>${ item.nm }</td>
+							<td style="width:130px; padding: 5px;">
+								<div class="pf_img">
+								<c:choose>
+									<c:when test="${ item.profile_img != null }">
+										<img src="/img/user/${ item.i_user}/${ item.profile_img }">
+									</c:when>
+									<c:otherwise>
+										<img src="/img/default_profile.jpg">
+									</c:otherwise>												
+								</c:choose>
+								</div>
+								${ item.nm }
+							
+							</td>
 							<td>${ item.r_dt }</td>
 					</tr>					
 				</c:forEach>
