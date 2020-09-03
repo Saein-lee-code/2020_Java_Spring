@@ -26,17 +26,33 @@ public class BoardDAO {
 				          + " ON A.I_USER = B.I_USER"
 				          + " LEFT JOIN ( select i_board, count(i_board) as cnt from t_board4_cmt group by i_board ) D " 
 				          + " ON (A.I_BOARD = D.I_BOARD) "
-				          + " WHERE A.TITLE LIKE ?"
-				          + " ORDER BY I_BOARD desc"
+				          + " WHERE ";
+					switch(param.getSearchType()) {
+					case "a":
+						sql += " A.title like ? ";
+						break;
+					case "b":
+						sql += " A.CTNT like ? ";
+						break;
+					case "c": 
+						sql += " (A.ctnt like ? or A.title like ? ) ";
+						break;
+					}						
+				  sql += " ORDER BY I_BOARD desc"
 				 + " ) A "
 			    + " WHERE ROWNUM <= ?) "
-			+ " WHERE RN > ? ";			
+			+ " A WHERE A.RN > ? ";			
 		JdbcTemplate.executeQuery(sql, new JdbcSelectInterface() {
 			@Override
-			public void prepared(PreparedStatement ps) throws SQLException {
-				ps.setNString(1, param.getSearchText());				
-				ps.setInt(2, param.geteIdx());
-				ps.setInt(3, param.getsIdx());
+			public void prepared(PreparedStatement ps) throws SQLException {				
+//				ps.setInt(seq,  param.getI_user()); // 로그인한 사람의 i_user
+				int seq = 1;
+				ps.setNString(seq, param.getSearchText());
+				if("c".equals(param.getSearchType())) {
+					ps.setNString(++seq, param.getSearchText());	
+				}				
+				ps.setInt(++seq, param.geteIdx());
+				ps.setInt(++seq, param.getsIdx());
 			}
 
 			@Override
@@ -95,6 +111,7 @@ public class BoardDAO {
 			@Override
 			public int executeQuery(ResultSet rs) throws SQLException {
 				if (rs.next()) {
+				
 					result.setTitle(rs.getNString("title"));
 					result.setI_user(rs.getInt("i_user"));
 					result.setNm(rs.getNString("name"));
@@ -130,8 +147,19 @@ public class BoardDAO {
 	}
 	// 페이징 숫자 가져오기
 		public static int selPagingCnt(final BoardDomain param) {
-			String sql = " SELECT CEIL(COUNT(I_BOARD) / ?) FROM T_BOARD_4 "
-					+ " WHERE TITLE LIKE ? ";
+			String sql = " SELECT CEIL(COUNT(I_BOARD) / ?) FROM T_BOARD_4 A WHERE ";
+					switch(param.getSearchType()) {
+					case "a":
+						sql += " A.title like ? ";
+						break;
+					case "b":
+						sql += " A.CTNT like ? ";
+						break;
+					case "c": 
+						sql += " (A.ctnt like ? or A.title like ? ) ";
+						break;
+					}					
+				
 			//'%' || ? || '%'
 			return JdbcTemplate.executeQuery(sql, new JdbcSelectInterface() {
 
@@ -139,6 +167,9 @@ public class BoardDAO {
 				public void prepared(PreparedStatement ps) throws SQLException {
 					ps.setInt(1, param.getRecord_cnt());
 					ps.setNString(2, param.getSearchText());
+					if(param.getSearchType().equals("c")) {
+						ps.setNString(3, param.getSearchText());
+					}
 				}
 				// 스칼라 1행1열만 있는것
 				@Override

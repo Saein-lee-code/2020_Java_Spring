@@ -9,7 +9,9 @@ public class BoardDomain extends BoardVO{
 	private int sIdx;
 	private int eIdx;
 	private String searchText;
+	private String searchType;
 	private String profile_img;
+	
 	
 	public String getProfile_img() {
 		return profile_img;
@@ -64,6 +66,12 @@ public class BoardDomain extends BoardVO{
 	}
 	public void setCmt_count(int cmt_count) {
 		this.cmt_count = cmt_count;
+	}
+	public String getSearchType() {
+		return searchType;
+	}
+	public void setSearchType(String searchType) {
+		this.searchType = searchType;
 	}
 
 }

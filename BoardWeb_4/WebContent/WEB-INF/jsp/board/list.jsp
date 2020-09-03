@@ -53,10 +53,12 @@
 	}
 	.btnStyle:hover { background-color:#b34332; }
 	.btnStyle:active { position:relative; top:1px; }
-	#selFrm{ position: absolute; bottom: 80px; left: 0; }
+	#selFrm{ position: absolute; left: 0; }
 	.pf_img { display: inline-block; position: relative; top: 5px; }
 	.pf_img img{ width: 40px; height: 40px; border-radius: 50%; }
 	.title_cmt_style{ font-weight: bold; }
+	#prf_style:hover { font-weight: bold; }
+	.highlight { color: red; font-weight: bold; }
 </style>
 </head>
 <body>
@@ -64,7 +66,7 @@
 		<header>
 			<h1>리스트</h1>
 			<div id="user_div"><span id="id_style">${ loginUser.nm }</span>님, 환영합니다!
-				<a href="/profile">프로필</a>
+				<span id="prf_style"><a href="/profile">프로필</a></span>
 				<div class="logout_write"><a href="/logout">로그아웃</a> / <a href="/board/regmod">글쓰기</a></div>
 			</div>
 		</header>
@@ -75,12 +77,12 @@
 				<tr id="th_style">
 					<th style="width:50px;">번호</th>
 					<th style="width:385px;">제목</th>
-					<th style="width: 60px;">조회수</th>
+					<th style="width:60px;">조회수</th>
 					<th>작성자</th>
 					<th id="date_style">등록일시</th>
 				</tr>
 				<c:forEach items="${list}" var="item">
-					<tr class="list_style" onClick="location.href='/board/detail?page=${ page }&record_cnt=${ param.record_cnt }&i_board=${item.i_board}&searchText=${ searchText }'">
+					<tr class="list_style" onClick="moveToDetail(${ item.i_board })">
 							<td>${ item.i_board }</td>
 							<td>${ item.title } <span class="title_cmt_style">[${ item.cmt_count }]</span></td>			
 							<td>${ item.hits }</td>
@@ -124,8 +126,13 @@
 		</div>
 		<div id="searchContainer">
 			<form id="search_style" action="/board/list">
+				<select name="searchType" style="position: relative; top: 1px;">
+					<option value="a" ${ searchType == 'a'? 'selected':'' }>제목</option>
+					<option value="b" ${ searchType == 'b'? 'selected':'' }>내용</option>
+					<option value="c" ${ searchType == 'c'? 'selected':'' }>제목+내용</option>
+				</select>
 				<input type="text" name="searchText" placeholder="검색어를 입력하세요." value="${ searchText }"> 
-				<input type="Submit" class="btnStyle" value="검색">
+				<input type="Submit" class="btnStyle" value="검색" onclick="highlight('${ searchText }')">
 			</form>
 		</div>
 		
@@ -134,10 +141,10 @@
 			<span class="page_style">
 				<c:choose>					
 						<c:when test="${ page == item }">
-							<span id="accent"><a href="/board/list?page=${ item }&record_cnt=${ param.record_cnt }&searchText=${ searchText }">${ item }</a></span>
+							<span id="accent"><a href="/board/list?page=${ item }&record_cnt=${ param.record_cnt }&searchText=${ searchText }&searchType=${ searchType }">${ item }</a></span>
 						</c:when>
 						<c:when test="${ page != item }">
-							<span><a class="address" href="/board/list?page=${ item }&record_cnt=${ param.record_cnt }&searchText=${ searchText }">${ item }</a></span>
+							<span><a class="address" href="/board/list?page=${ item }&record_cnt=${ param.record_cnt }&searchText=${ searchText }&searchType=${ searchType }">${ item }</a></span>
 						</c:when>					
 				</c:choose>
 			</span>									
@@ -147,6 +154,13 @@
 	<script>
 		function changeRecordCnt(){
 			selFrm.submit();
+		}
+		function moveToDetail(i_board){
+			location.href='/board/detail?page=${ page }&record_cnt=${ param.record_cnt }&i_board=' + i_board + '&searchText=${ searchText }&searchType=${ searchType }'
+		}
+		function highlight(text){
+			var list_style = document.getElementsByClassName("list_style");
+			
 		}
 	</script>
 </body>

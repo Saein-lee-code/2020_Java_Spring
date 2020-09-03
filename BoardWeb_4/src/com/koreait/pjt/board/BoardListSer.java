@@ -1,6 +1,7 @@
 package com.koreait.pjt.board;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,8 +26,12 @@ public class BoardListSer extends HttpServlet {
 			response.sendRedirect("/login");
 			return;
 		}
+		String searchType = request.getParameter("searchType");
+		searchType = (searchType == null) ? "a" : searchType;
+		
 		String searchText = request.getParameter("searchText");
 		searchText = ( searchText == null? "" : searchText );
+		
 		// 0이 넘어가는 경우 : null일때, 숫자+문자 같이 들어가있을 때(예외)
 		int page = MyUtils.getIntParameter(request,  "page");
 		page = page == 0 ? 1 : page;		
@@ -40,6 +45,7 @@ public class BoardListSer extends HttpServlet {
 		param.setsIdx(sIndex);
 		param.seteIdx(eIndex);		
 		param.setRecord_cnt(recordCnt);
+		param.setSearchType(searchType);
 		param.setSearchText("%" + searchText + "%");
 //		param.setSearchText(searchText);
 		
@@ -52,8 +58,18 @@ public class BoardListSer extends HttpServlet {
 		
 		request.setAttribute("page", page);	
 		request.setAttribute("pagingCnt", pagingCnt);
+		List<BoardDomain> list = BoardDAO.selBoardList(param);
+		if(!"".equals(searchText) && ("a".equals(searchType) || "c".equals(searchType))) {
+			for(BoardDomain item : list) {				
+				String title = item.getTitle();
+				title = title.replace(searchText, "<span class=\"highlight\">" + searchText + "</span>");
+				item.setTitle(title);
+			}
+		}
+		
 		request.setAttribute("searchText", searchText);
-		request.setAttribute("list", BoardDAO.selBoardList(param));
+		request.setAttribute("searchType", searchType);
+		request.setAttribute("list", list);
 		
 		hs.setAttribute("recordCnt", recordCnt);		
 		ViewResolver.forwardLoginChk("board/list", request, response);

@@ -14,8 +14,11 @@
 </head>
 <body>
 	<div class="container">
-		<h1>프로필</h1>
 		<a href="/board/list"><button>Home</button></a>
+		<h1>프로필</h1>
+		<div>
+			<a href="/changePw"><button>비밀번호 변경</button></a>
+		</div>		
 		<div>
 			<div>
 				<c:choose>
@@ -42,5 +45,13 @@
 			<div>가입일시: ${ data.r_dt }</div>
 		</div>
 	</div>	
+	<script>
+		var proc = "${param.proc}";
+		switch(proc){
+		case '1':
+			alert('비밀번호를 변경하였습니다.');
+			break;
+		}
+	</script>
 </body>
 </html>

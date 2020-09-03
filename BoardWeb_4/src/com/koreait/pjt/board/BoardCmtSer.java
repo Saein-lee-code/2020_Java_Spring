@@ -1,6 +1,7 @@
 package com.koreait.pjt.board;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -53,7 +54,8 @@ public class BoardCmtSer extends HttpServlet {
 				param.setI_cmt(MyUtils.parseStrToInt(strI_cmt));
 				BoardCmtDAO.updCmt(param);
 				break;
-		}		
+		}
+
 		response.sendRedirect("/board/detail?i_board=" + strI_board);
 	}
 }

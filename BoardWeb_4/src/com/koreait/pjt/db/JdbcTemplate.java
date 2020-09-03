@@ -40,6 +40,6 @@ public class JdbcTemplate {
 			DbCon.close(con, ps);
 		}
 		return result;
-	}
+	}	
 }
 	

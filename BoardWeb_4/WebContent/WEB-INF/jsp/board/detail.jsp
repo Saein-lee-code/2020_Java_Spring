@@ -15,20 +15,21 @@
 	td{ padding-left: 10px; }
 	#cmt_table{ margin: 30px auto 0; width:800px; }
 	.cmt_writer{ font-weight: bold; text-align: center; }
-	#ctnt_style{ height: 200px; padding-left: 20px; text-align: left; }
-	#likes { width: 40px; border-left: none; color: #F15285; padding-right:10px; }
+	.ctnt_style{ height: 200px; padding-left: 20px; text-align: left; }
+	#likes { text-align: center; width: 80px; border-left: none; color: #F15285; padding:0; }
 	#likes:hover{ cursor: pointer; }
 	.prf_img{ width: 40px; height: 40px; border-radius: 50%; position:absolute; top:4px; right: 20px;  }
 	.title_cmt_style { font-weight: bold; }
 	.notice_like { color:#F15285; font-size: 0.9em; position: relative;
    				   left: 30px; top: 20px; 
     				text-shadow: 1px 1px 4px lightcoral; }
+    .highlight { color: red; font-weight: bold; }
 </style>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
 	<div class="container">상세페이지
-		<a href="/board/list?page=${ param.page }&record_cnt=${ param.record_cnt }&searchText=${ param.searchText }"><button>Back</button></a><br>
+		<a href="/board/list?page=${ param.page }&record_cnt=${ param.record_cnt }&searchText=${ param.searchText }&searchType=${ param.searchType }"><button>Back</button></a><br>
 		<!-- session 객체에서 만듬 . login할때 생김 브라우저끄면 session 소멸  -->
 		<c:if test = "${ loginUser.i_user == data.i_user }">
 			<!-- 쿼리스트링 보내야함 
@@ -51,8 +52,8 @@
 		</c:if>								
 		<table>
 			<tr>
-				<th>제목</th>			
-				<td> ${ data.title }<span class="title_cmt_style"> [${ data.cmt_count }]</span></td>
+				<th style="width: 100px;">제목</th>			
+				<td id="elTitle"> ${ data.title }<span class="title_cmt_style"> [${ data.cmt_count }]</span></td>
 				<td id="likes" onclick="toggleLike(${ data.yn_like })">
 					<c:if test="${ data.yn_like == 0 }">
 						<span class="material-icons">
@@ -63,8 +64,10 @@
 						<span class="material-icons">
 							favorite
 						</span>
+					</c:if>					
+					<c:if test="${ data.like_count != 0 }">
+						${ data.like_count }개
 					</c:if>
-					${ data.like_count }
 				</td>
 				
 				<th>작성자</th>
@@ -102,8 +105,8 @@
 				<td>${ data.hits }</td>
 			<tr>
 			<tr>
-				<td colspan="5" id="ctnt_style">${ data.ctnt }</td>
-			</tr>	
+				<td colspan="5" id="elCtnt" class="ctnt_style">${ data.ctnt }</td>
+			</tr>	 
 		</table>
 		<!-- 댓글  -->
 		<div>
@@ -114,9 +117,9 @@
 					<input type="text" name="cmt" placeholder="댓글내용">
 					<input type="submit" id="cmtSubmit" value="전송"> <!-- 등록/수정 -->
 					<input type="button" value="취소" onclick="clkCmtCancel()">					
-				</div>
-				
+				</div>				
 			</form>
+			
 			<table id="cmt_table">
 			<tr>
 				<th>내용</th>
@@ -165,11 +168,36 @@
 			cmtFrm.cmt.value = ctnt;
 			cmtSubmit.value = '수정';
 		}
-		function toggleLike(yn_like){
-			location.href="/board/toggleLike?i_board=${data.i_board}&yn_like=" + yn_like;
+		function toggleLike(yn_like){			
+			location.href='/board/toggleLike?page=${param.page}&record_cnt=${param.record_cnt}&searchType=${param.searchType}&searchText=${param.searchText}&i_board=${data.i_board}&yn_like=' + yn_like
 		}
 		
-	
+		function doHighlight(){			
+			var searchType = '${ param.searchType }'
+			var searchText = '${ param.searchText }'
+			switch(searchType){
+			case 'a':
+				var txt = elTitle.innerText
+				txt = txt.replace(new RegExp('${ searchText }'), '<span class="highlight">' + searchText + '</span>');
+				elTitle.innerHTML = txt
+				break
+			case 'b':
+				var txt = elCtnt.innerText
+				txt = txt.replace(new RegExp('${ searchText }'), '<span class="highlight">' + searchText + '</span>')
+				elCtnt.innerHTML = txt
+				break
+			case 'c':
+				var txt = elTitle.innerText
+				txt = txt.replace(new RegExp('${ searchText }'), '<span class="highlight">' + searchText + '</span>');
+				elTitle.innerHTML = txt
+				
+				txt = elCtnt.innerText
+				txt = txt.replace(new RegExp('${ searchText }'), '<span class="highlight">' + searchText + '</span>');
+				elCtnt.innerHTML = txt				
+				break			
+			}
+		}
+		doHighlight()
 		
 	</script>
 </body>
