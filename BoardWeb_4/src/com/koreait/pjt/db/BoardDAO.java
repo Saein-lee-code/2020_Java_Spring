@@ -20,12 +20,17 @@ public class BoardDAO {
 		String sql = " SELECT *" 
 			+ " FROM (SELECT A.*, ROWNUM RN "
 			    + " FROM ("
-			    	  + " SELECT A.I_BOARD, A.TITLE, A.I_USER, A.HITS, A.R_DT, B.NM, B.PROFILE_IMG, nvl(D.cnt, 0) as cmt_cnt  "
+			    	  + " SELECT A.I_BOARD, A.TITLE, A.I_USER, A.HITS, A.R_DT, B.NM, B.PROFILE_IMG, nvl(D.cnt, 0) as cmt_cnt, DECODE(C.I_BOARD, NULL, 0, 1) AS YN_LIKE,"
+			    	  + "nvl(E.cnt, 0) as like_cnt  "
 				          + " FROM T_BOARD_4 A "
 				          + " INNER JOIN T_USER B"
 				          + " ON A.I_USER = B.I_USER"
+				          + " LEFT JOIN ( SELECT i_board FROM t_board4_like WHERE i_user = ? ) C"
+						  + " ON (A.I_BOARD = C.I_BOARD) "
 				          + " LEFT JOIN ( select i_board, count(i_board) as cnt from t_board4_cmt group by i_board ) D " 
 				          + " ON (A.I_BOARD = D.I_BOARD) "
+				          + " LEFT JOIN ( SELECT i_board, count(i_board) as cnt FROM t_board4_like GROUP BY i_board ) E"
+				          + " ON A.I_BOARD = E.I_BOARD"
 				          + " WHERE ";
 					switch(param.getSearchType()) {
 					case "a":
@@ -47,7 +52,8 @@ public class BoardDAO {
 			public void prepared(PreparedStatement ps) throws SQLException {				
 //				ps.setInt(seq,  param.getI_user()); // 로그인한 사람의 i_user
 				int seq = 1;
-				ps.setNString(seq, param.getSearchText());
+				ps.setInt(seq, param.getI_user());
+				ps.setNString(++seq, param.getSearchText());
 				if("c".equals(param.getSearchType())) {
 					ps.setNString(++seq, param.getSearchText());	
 				}				
@@ -64,6 +70,7 @@ public class BoardDAO {
 					int i_user = rs.getInt("i_user");	
 					String nm = rs.getNString("nm");
 					String r_dt = rs.getNString("r_dt");
+					int yn_like = rs.getInt("yn_like");
 					
 					BoardDomain vo = new BoardDomain();
 					vo.setI_board(i_board);
@@ -74,6 +81,8 @@ public class BoardDAO {
 					vo.setNm(nm);
 					vo.setProfile_img(rs.getNString("profile_img"));
 					vo.setR_dt(r_dt);
+					vo.setYn_like(yn_like);
+					vo.setLike_count(rs.getInt("like_cnt"));
 					list.add(vo);
 				}
 				return 1;
@@ -255,4 +264,31 @@ public class BoardDAO {
 		});
 	}
 
+	public static List<BoardDomain> selBoardLikeList(final int i_board) {
+		List<BoardDomain> list = new ArrayList();		
+		String sql = " SELECT B.i_user, B.nm, B.profile_img"
+				+ " FROM t_board4_like A"
+				+ " INNER JOIN t_user B"
+				+ " ON A.i_user = B.i_user"
+				+ " WHERE A.i_board = ?"
+				+ " ORDER BY A.R_DT ASC "; 		
+		JdbcTemplate.executeQuery(sql, new JdbcSelectInterface() {
+			@Override
+			public void prepared(PreparedStatement ps) throws SQLException {
+				ps.setInt(1, i_board);
+			}
+			@Override
+			public int executeQuery(ResultSet rs) throws SQLException {
+				while(rs.next()) {
+					BoardDomain vo = new BoardDomain();
+					vo.setI_user(rs.getInt("i_user"));
+					vo.setNm(rs.getNString("nm"));
+					vo.setProfile_img(rs.getNString("profile_img"));					
+					list.add(vo);
+				}
+				return 1;
+			}
+		});		
+		return list;
+	}
 }

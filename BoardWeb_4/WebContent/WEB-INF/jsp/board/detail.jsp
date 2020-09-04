@@ -26,8 +26,10 @@
     .highlight { color: red; font-weight: bold; }
 </style>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css" />
+
 </head>
-<body>
+<body class="preload">
 	<div class="container">상세페이지
 		<a href="/board/list?page=${ param.page }&record_cnt=${ param.record_cnt }&searchText=${ param.searchText }&searchType=${ param.searchType }"><button>Back</button></a><br>
 		<!-- session 객체에서 만듬 . login할때 생김 브라우저끄면 session 소멸  -->
@@ -68,8 +70,7 @@
 					<c:if test="${ data.like_count != 0 }">
 						${ data.like_count }개
 					</c:if>
-				</td>
-				
+				</td>				
 				<th>작성자</th>
 				<td style="width: 120px; position:relative; "> ${ data.nm } 
 				<c:choose>

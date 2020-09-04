@@ -14,6 +14,7 @@ import com.koreait.pjt.MyUtils;
 import com.koreait.pjt.ViewResolver;
 import com.koreait.pjt.db.BoardDAO;
 import com.koreait.pjt.vo.BoardDomain;
+import com.koreait.pjt.vo.UserVO;
 
 
 @WebServlet("/board/list")
@@ -21,7 +22,8 @@ public class BoardListSer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession hs = (HttpSession)request.getSession();
-
+		
+		UserVO loginUser = MyUtils.getLoginUser(request);
 		if(MyUtils.isLogout(request)) {
 			response.sendRedirect("/login");
 			return;
@@ -58,6 +60,7 @@ public class BoardListSer extends HttpServlet {
 		
 		request.setAttribute("page", page);	
 		request.setAttribute("pagingCnt", pagingCnt);
+		param.setI_user(loginUser.getI_user());
 		List<BoardDomain> list = BoardDAO.selBoardList(param);
 		if(!"".equals(searchText) && ("a".equals(searchType) || "c".equals(searchType))) {
 			for(BoardDomain item : list) {				

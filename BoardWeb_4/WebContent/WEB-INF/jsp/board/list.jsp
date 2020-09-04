@@ -53,13 +53,52 @@
 	}
 	.btnStyle:hover { background-color:#b34332; }
 	.btnStyle:active { position:relative; top:1px; }
+	.like_cnt { border-right: 1px solid white; padding-left: 10px; padding-right: 10px; }
 	#selFrm{ position: absolute; left: 0; }
 	.pf_img { display: inline-block; position: relative; top: 5px; }
 	.pf_img img{ width: 40px; height: 40px; border-radius: 50%; }
 	.title_cmt_style{ font-weight: bold; }
 	#prf_style:hover { font-weight: bold; }
 	.highlight { color: red; font-weight: bold; }
+	#likeListContainer {			
+		padding: 10px;		
+		border: 1px solid #bdc3c7;
+		position: absolute;
+		left: -170px;
+		top: 30px;
+		width: 130px;
+		height: 300px;
+		overflow-y: auto;
+		background-color: white !important;
+		transition-duration : 500ms;
+	}		
+		
+	.profile {
+		background-color: white !important;
+		display: inline-block;	
+		width: 25px;
+		height: 25px;
+	    border-radius: 50%;
+	    overflow: hidden;
+	}		
+	
+	.likeItemContainer {
+		display: flex;
+		width: 100%;
+	}
+	.prf_img { width: 30px; height:30px; }
+	.likeItemContainer .nm {
+		background-color: white !important;
+		margin-left: 7px;
+		font-size: 0.7em;
+		display: flex;
+		align-items: center;
+	}
 </style>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
 </head>
 <body>
 	<div class="container">
@@ -69,6 +108,7 @@
 				<span id="prf_style"><a href="/profile">프로필</a></span>
 				<div class="logout_write"><a href="/logout">로그아웃</a> / <a href="/board/regmod">글쓰기</a></div>
 			</div>
+			<div id="likeListContainer"></div>
 		</header>
 		
 		<div id="listContainer">
@@ -76,17 +116,32 @@
 			<table>
 				<tr id="th_style">
 					<th style="width:50px;">번호</th>
-					<th style="width:385px;">제목</th>
+					<th style="width:385px;" colspan="3">제목</th>					
 					<th style="width:60px;">조회수</th>
 					<th>작성자</th>
 					<th id="date_style">등록일시</th>
 				</tr>
 				<c:forEach items="${list}" var="item">
-					<tr class="list_style" onClick="moveToDetail(${ item.i_board })">
-							<td>${ item.i_board }</td>
-							<td>${ item.title } <span class="title_cmt_style">[${ item.cmt_count }]</span></td>			
-							<td>${ item.hits }</td>
-							<td style="width:130px; padding: 5px;">
+					<tr class="list_style">
+							<td onClick="moveToDetail(${ item.i_board })">${ item.i_board }</td>
+							<td onClick="moveToDetail(${ item.i_board })">${ item.title } <span class="title_cmt_style">[${ item.cmt_count }]</span></td>
+							<td class="like_cnt">
+								<span onClick="getLikeList(${ item.i_board },${ item.like_count })">${ item.like_count }</span>
+							</td>
+							<td>
+								<c:if test="${ item.yn_like == 0 }">
+									<span class="material-icons">
+										favorite_border
+									</span>						
+								</c:if>
+								<c:if test="${ item.yn_like == 1 }">
+									<span class="material-icons" style="color: #F15285;">
+										favorite
+									</span>
+								</c:if>			
+							</td>		
+							<td>${ item.hits }</td>							
+							<td style="width:130px; padding: 5px;">							
 								<div class="pf_img">
 								<c:choose>
 									<c:when test="${ item.profile_img != null }">
@@ -161,6 +216,41 @@
 		function highlight(text){
 			var list_style = document.getElementsByClassName("list_style");
 			
+		}
+		function getLikeList(i_board, cnt){
+			
+			likeListContainer.innerHTML = "";
+			if(cnt == 0){ return }
+			axios.get('/board/like', {
+				params: {
+					'i_board': i_board
+				}
+			}).then(function(res){
+				if(res.data.length > 0){
+					for(let i=0; i<res.data.length; i++){
+						const result = makeLikeUser(res.data[i])
+						likeListContainer.innerHTML += result;
+						console.log(result);
+					}					
+				}
+			})			
+		}
+		
+		function makeLikeUser(one){
+			const img = one.profile_img == null ? '<img class="prf_img" src ="/img/default_profile.jpg">' : 
+				`<img class="prf_img" src="/img/user/\${one.i_user}/\${one.profile_img}">`;
+				
+			const ele = `<div class="likeItemContainer">
+				<div class="profileContainer">
+					<div class="profile">
+							\${img}
+					</div>
+					 <div class="nm">\${one.nm}</div>
+				</div>
+			</div>
+			`;
+			
+			return ele;
 		}
 	</script>
 </body>
