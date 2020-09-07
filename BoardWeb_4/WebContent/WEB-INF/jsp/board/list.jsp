@@ -20,13 +20,14 @@
 		
 	#homeBtn { position: absolute; left:0; top: 50px; }
 	
-	table { margin-top: 30px; border-collapse: collapse; text-align: center; width: 800px; }	
-	td, th { border: 1px solid #eee; }
+	table { margin-top: 30px; border-collapse: collapse; text-align: center; width: 800px; border: 1px solid #eee; }	
+	th { border: 1px solid #eee; }
 	td{ font-size:0.9em; padding: 10px 0; }
 	
+	.list_title { text-overflow: ellipsis; width:250px; overflow: hidden;  white-space: nowrap; display: inline-block; line-height: 37px; }
 	#selFrm { margin-top: 20px; }
 	#th_style { background-color: orange; color: white; height: 35px; }
-	.list_style:hover { cursor: pointer; background: #FE7558; color: white; }
+	.list_style:hover { cursor: pointer; background: #FE7558; color: white; transition: 0.3s; }
 	#id_style { font-weight: bold; }
 	#date_style { width: 200px; }
 	.select_style { background: #FDEDEC; }
@@ -53,24 +54,24 @@
 	}
 	.btnStyle:hover { background-color:#b34332; }
 	.btnStyle:active { position:relative; top:1px; }
-	.like_cnt { border-right: 1px solid white; padding-left: 10px; padding-right: 10px; }
+	.like_cnt { padding-left: 30px; color: #F15285; font-weight: bold; }
 	#selFrm{ position: absolute; left: 0; }
 	.pf_img { display: inline-block; position: relative; top: 5px; }
 	.pf_img img{ width: 40px; height: 40px; border-radius: 50%; }
-	.title_cmt_style{ font-weight: bold; }
 	#prf_style:hover { font-weight: bold; }
 	.highlight { color: red; font-weight: bold; }
 	#likeListContainer {			
 		padding: 10px;		
 		border: 1px solid #bdc3c7;
 		position: absolute;
-		left: -170px;
+		right: -200px; 
 		top: 30px;
-		width: 130px;
-		height: 300px;
+		width: 60px;
+		height: auto;
 		overflow-y: auto;
 		background-color: white !important;
 		transition-duration : 500ms;
+		visibility: hidden;
 	}		
 		
 	.profile {
@@ -86,14 +87,18 @@
 		display: flex;
 		width: 100%;
 	}
-	.prf_img { width: 30px; height:30px; }
+	.prf_img { width: 30px; height:30px;
+		       position: absolute; left: 15px; }
 	.likeItemContainer .nm {
+	    padding: 5px 0;	
 		background-color: white !important;
 		margin-left: 7px;
 		font-size: 0.7em;
 		display: flex;
 		align-items: center;
 	}
+	.title_cmt_style{ font-weight: bold; position: absolute; top: 20px; }
+	
 </style>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -124,9 +129,9 @@
 				<c:forEach items="${list}" var="item">
 					<tr class="list_style">
 							<td onClick="moveToDetail(${ item.i_board })">${ item.i_board }</td>
-							<td onClick="moveToDetail(${ item.i_board })">${ item.title } <span class="title_cmt_style">[${ item.cmt_count }]</span></td>
+							<td style="position:relative;" onClick="moveToDetail(${ item.i_board })"><span class="list_title">${ item.title }</span><span class="title_cmt_style">[${ item.cmt_count }]</span></td>
 							<td class="like_cnt">
-								<span onClick="getLikeList(${ item.i_board },${ item.like_count })">${ item.like_count }</span>
+								<span onClick="getLikeList(${ item.i_board },${ item.like_count }, this)">${ item.like_count }</span>
 							</td>
 							<td>
 								<c:if test="${ item.yn_like == 0 }">
@@ -207,6 +212,7 @@
 		</div>
 	</div>
 	<script>
+		var beforeI_board = 0;
 		function changeRecordCnt(){
 			selFrm.submit();
 		}
@@ -217,10 +223,23 @@
 			var list_style = document.getElementsByClassName("list_style");
 			
 		}
-		function getLikeList(i_board, cnt){
-			
-			likeListContainer.innerHTML = "";
+		function getLikeList(i_board, cnt, span){			
 			if(cnt == 0){ return }
+			if(beforeI_board == i_board){
+				likeListContainer.style.display = 'none';
+				return;
+			}else{
+				beforeI_board = i_board;
+				likeListContainer.style.display = 'undset';
+			}
+			const locationX = window.scrollX + span.getBoundingClientRect().left
+			const locationY = window.scrollY + span.getBoundingClientRect().top + 30
+			likeListContainer.style.left = `\${locationX}px`
+			likeListContainer.style.visibility = "visible";
+			likeListContainer.style.top = `\${locationY}px`
+			likeListContainer.innerHTML = "";
+			
+				
 			axios.get('/board/like', {
 				params: {
 					'i_board': i_board
@@ -252,6 +271,8 @@
 			
 			return ele;
 		}
+		
+		
 	</script>
 </body>
 </html>
