@@ -1,10 +1,17 @@
 package com.koreait.matzip.vo;
 
+import java.sql.Date;
+
 public class UserVO {
 	private int i_user;
 	private String user_id;
 	private String user_pw;
 	private String salt;
+	private String m_dt;
+	private String r_dt;
+	private String nm;
+	private String profile_img;
+	
 	public int getI_user() {
 		return i_user;
 	}
@@ -41,20 +48,19 @@ public class UserVO {
 	public void setProfile_img(String profile_img) {
 		this.profile_img = profile_img;
 	}
+	
 	public String getR_dt() {
 		return r_dt;
 	}
-	public void setR_dt(String r_dt) {
-		this.r_dt = r_dt;
+	public void setR_dt(String date) {
+		this.r_dt = date;
 	}
-	public String getM_t() {
-		return m_t;
+	
+	public String getM_dt() {
+		return m_dt;
 	}
-	public void setM_t(String m_t) {
-		this.m_t = m_t;
+	public void setM_dt(String m_dt) {
+		this.m_dt = m_dt;
 	}
-	private String nm;
-	private String profile_img;
-	private String r_dt;
-	private String m_t;
+	
 }

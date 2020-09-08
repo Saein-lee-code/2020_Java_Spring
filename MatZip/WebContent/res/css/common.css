@@ -19,6 +19,11 @@ html, body {
 	align-items: center;
 }
 
+.msg {
+	color: red; 
+	font-weight: bold; 
+}
+
 .frm {
 	border: 1px solid Tomato;
 	padding: 15px;	

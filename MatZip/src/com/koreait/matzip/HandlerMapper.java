@@ -12,22 +12,29 @@ public class HandlerMapper {
 	
 	public String nav(HttpServletRequest request) {		
 		String[] uriArr = request.getRequestURI().split("/");
+		for(int i=0; i<uriArr.length; i++) {
+			System.out.println("uriArr[" + i + "]: " + uriArr[i]);
+		}
 		if(uriArr.length < 3) {
 			return "405";
 		}
-		
+				
 		switch(uriArr[1]) {
 		// case "user"
 		case ViewRef.URI_USER:
 			switch(uriArr[2]) {
 			case "login":
-				return userCon.login(request);	
+				return userCon.login(request);
+			case "loginProc":
+				return userCon.loginProc(request);
 			case "join":
 				return userCon.join(request);
 			case "joinProc":
 				return userCon.joinProc(request);
+			case "ajaxIdChk":
+				return userCon.ajaxIdChk(request);
 			}
-			break;			
+			break;		
 		}		
 		return "404";
 	}
