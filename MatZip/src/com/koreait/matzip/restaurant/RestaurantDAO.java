@@ -1,5 +1,5 @@
 package com.koreait.matzip.restaurant;
 
-public class restaurantDAO {
+public class RestaurantDAO {
 
 }

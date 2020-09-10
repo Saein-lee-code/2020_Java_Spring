@@ -26,11 +26,20 @@ public class Container extends HttpServlet {
 		proc(request, response);
 	}
 	
-	private void proc(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private void proc(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
+		
+		String routerCheckResult = LoginChkInterceptor.routerChk(request);
+		if(routerCheckResult != null) {
+			response.sendRedirect(routerCheckResult);
+			return;
+		}
+		
 		String temp = mapper.nav(request); // 보통 템플릿 파일명		
 		if(temp.indexOf(":") >= 0) {
 			String prefix = temp.substring(0, temp.indexOf(":"));
 			String value = temp.substring(temp.indexOf(":") + 1);
+			System.out.println("prefix : " + prefix);
+			System.out.println("value : " + value);
 			if("redirect".equals(prefix)){				
 				response.sendRedirect(value);				
 				return;			

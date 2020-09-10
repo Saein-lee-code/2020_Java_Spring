@@ -1,5 +1,5 @@
 package com.koreait.matzip.restaurant;
 
-public class restaurantController {
-	
+public class RestaurantService {
+
 }

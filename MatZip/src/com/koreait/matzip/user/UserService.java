@@ -27,14 +27,19 @@ public class UserService {
 		// 이때 i_user 는 안넣어서 아마도 0 (default)
 		// 두번째 if문 실행
 		// 정보 다 가져옴
+
+		// 클래스: 멤버필드 멤버 메소드 멤버 생성자
 		
 		if(dbResult.getI_user() == 0) { //아이디 없음			
 			result = 2;
 		}else {
-			String salt = SecurityUtils.generateSalt();
+			String salt = dbResult.getSalt();
 			String encryptPw = SecurityUtils.getEncrypt(param.getUser_pw(), salt);		
-		
-			if(encryptPw.equals(dbResult.getUser_pw())){				
+			if(encryptPw.equals(dbResult.getUser_pw())){// 로그인성공
+				param.setUser_pw(null);
+				param.setI_user(dbResult.getI_user());
+				param.setNm(dbResult.getNm());
+				param.setProfile_img(dbResult.getProfile_img());
 				result = 1;
 			}else if(!encryptPw.equals(dbResult.getUser_pw()) || encryptPw == null) {
 				result = 3;

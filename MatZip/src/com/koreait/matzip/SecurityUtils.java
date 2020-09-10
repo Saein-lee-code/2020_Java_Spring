@@ -4,11 +4,30 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import com.koreait.matzip.vo.UserVO;
+
 public class SecurityUtils {
-    public static String getEncrypt(String source, String salt) {
+	
+	public static boolean isLogout(HttpServletRequest request) {
+		if(null == getLoginUser(request)) {
+			return true;
+		}
+		return false;
+	}
+    private static UserVO getLoginUser(HttpServletRequest request) {
+    	HttpSession hs = request.getSession();
+		return (UserVO)hs.getAttribute(Const.LOGIN_USER);
+	}
+    
+	public static String getEncrypt(String source, String salt) {
         return getEncrypt(source, salt.getBytes());
     }
     
+	
+	
     public static String getEncrypt(String source, byte[] salt) {
         
         String result = "";

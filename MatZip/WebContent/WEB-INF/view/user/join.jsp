@@ -19,9 +19,14 @@
 <script>
 	function chkId(){
 		const user_id = frm.user_id.value
+		/*
+			axios.post('/user/ajaxIdChk', { user_id : 'user_id' }).then(function(res){ console.log(res) })
+		*/
+		// '/user/ajaxIdChk?usder_id=1'
 		axios.get('/user/ajaxIdChk', {
 			params: {
 				user_id
+				// 'user_id' : user_id
 			}
 		}).then(function(res){
 			console.log(res)

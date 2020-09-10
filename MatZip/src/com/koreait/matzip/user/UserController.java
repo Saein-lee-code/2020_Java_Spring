@@ -1,7 +1,9 @@
 package com.koreait.matzip.user;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import com.koreait.matzip.CommonUtils;
 import com.koreait.matzip.Const;
 import com.koreait.matzip.ViewRef;
 import com.koreait.matzip.vo.UserVO;
@@ -38,10 +40,12 @@ public class UserController {
 		
 		UserVO param = new UserVO();
 		param.setUser_id(user_id);
-		param.setUser_pw(user_pw); // test
-		int result = service.login(param);
+		param.setUser_pw(user_pw); // test 아이디비번 넣어줌
+		
+		int result = service.login(param); // 비번 null 해주고 name i_user img 넣어줌
 		if(result == 1) {
-			request.setAttribute(Const.TITLE, "로그인성공");			
+			HttpSession hs = request.getSession();
+			hs.setAttribute(Const.LOGIN_USER, param);
 			return "redirect:/restaurant/restMap";
 		}else {
 			return "redirect:/user/login?user_id=" + user_id + "&error=" + result;
@@ -67,7 +71,7 @@ public class UserController {
 		param.setNm(nm);
 		
 		int result = service.join(param);
-		if(result == 1) {
+		if(result == 1) {			
 			return "redirect:/user/login";
 		}
 		return "redirect:/user/login";
@@ -84,5 +88,11 @@ public class UserController {
 		
 		return String.format("ajax:{\"result\": %s}", result);
 	}	
+	
+	public String logout(HttpServletRequest request) {
+		HttpSession hs = request.getSession();
+		hs.invalidate();			
+		return "redirect:/user/login";
+	}
 }
 	

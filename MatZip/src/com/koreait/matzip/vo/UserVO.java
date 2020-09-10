@@ -1,7 +1,5 @@
 package com.koreait.matzip.vo;
 
-import java.sql.Date;
-
 public class UserVO {
 	private int i_user;
 	private String user_id;
@@ -52,8 +50,8 @@ public class UserVO {
 	public String getR_dt() {
 		return r_dt;
 	}
-	public void setR_dt(String date) {
-		this.r_dt = date;
+	public void setR_dt(String r_dt) {
+		this.r_dt = r_dt;
 	}
 	
 	public String getM_dt() {
