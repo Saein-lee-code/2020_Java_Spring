@@ -2,6 +2,15 @@ package com.koreait.matzip.vo;
 
 public class RestaurantVO {
 	private int i_rest;
+	private String nm;
+	private String addr;
+	private double lat;
+	private double lng;
+	private int cd_category;
+	private int i_user;
+	private String r_dt;
+	private String m_dt;
+	
 	public int getI_rest() {
 		return i_rest;
 	}
@@ -56,13 +65,6 @@ public class RestaurantVO {
 	public void setM_dt(String m_dt) {
 		this.m_dt = m_dt;
 	}
-	private String nm;
-	private String addr;
-	private double lat;
-	private double lng;
-	private int cd_category;
-	private int i_user;
-	private String r_dt;
-	private String m_dt;
+	
 	
 }

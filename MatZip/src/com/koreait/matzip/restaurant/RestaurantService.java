@@ -19,8 +19,10 @@ public class RestaurantService {
 	
 	public String getRestList() {
 		List<RestaurantDomain> list = dao.selRestList();
-		Gson gson = new Gson();		
+		Gson gson = new Gson();
 		return gson.toJson(list);
 	}
-	
+	public RestaurantDomain restDetail(RestaurantDomain param) {
+		return dao.restDetail(param);
+	}	
 }

@@ -7,10 +7,10 @@ import com.koreait.matzip.user.UserController;
 
 public class HandlerMapper {
 	private UserController userCon;
-	private RestaurantController resCon;
+	private RestaurantController restCon;
 	public HandlerMapper() {
 		userCon = new UserController();
-		resCon = new RestaurantController();
+		restCon = new RestaurantController();
 	}
 	
 	public String nav(HttpServletRequest request) {		
@@ -40,13 +40,17 @@ public class HandlerMapper {
 		case ViewRef.URI_RESTAURANT:
 			switch(uriArr[2]) {
 			case "restMap":
-				return resCon.restMap(request);
+				return restCon.restMap(request);
 			case "restReg":
-				return resCon.restReg(request);
+				return restCon.restReg(request);
 			case "restRegProc":
-				return resCon.restRegProc(request);			
+				return restCon.restRegProc(request);			
 			case "ajaxGetList":
-				return resCon.ajaxGetList(request);
+				return restCon.ajaxGetList(request);
+			case "restDetail":
+				return restCon.restDetail(request);
+			case "addRecMenusProc":
+				return restCon.addRecMenusProc(request);
 			}
 		}		
 		return "404";
