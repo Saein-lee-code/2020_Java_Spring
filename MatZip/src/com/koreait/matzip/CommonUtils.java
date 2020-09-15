@@ -2,6 +2,8 @@ package com.koreait.matzip;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.oreilly.servlet.MultipartRequest;
+
 public class CommonUtils {	
 	public static int getIntParameter(String key, HttpServletRequest request) {
 		return parseStringToInt(request.getParameter(key));
@@ -23,5 +25,9 @@ public class CommonUtils {
 			return Double.parseDouble(str);
 		} catch(Exception e) {}		
 		return 0;
+	}
+	
+	public static int getIntParameter(String key, MultipartRequest request) {
+		return parseStringToInt(request.getParameter(key));
 	}
 }

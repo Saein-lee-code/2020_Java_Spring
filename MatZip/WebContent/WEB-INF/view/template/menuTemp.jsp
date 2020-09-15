@@ -8,6 +8,11 @@
 <meta charset="UTF-8">
 <title>${title}</title>
 <link rel="stylesheet" type="text/css" href="/res/css/common.css">
+<c:if test = "${ css!=null }">
+	<c:forEach items="${ css }">
+		<link rel="stylesheet" type="text/css" href="/res/css/restaurant.css">
+	</c:forEach>
+</c:if>
 </head>
 <body>
 	<div id="container">
