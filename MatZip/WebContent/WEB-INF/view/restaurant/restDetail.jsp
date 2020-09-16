@@ -7,22 +7,6 @@
 	.menu_input input{ margin-right: 20px; }
 </style>
 	<div>
-		<c:if test="${loginUser.i_user == data.i_user}">
-			<div id="formContainer">
-				<button id="delBtn" onclick="isDel()">삭제</button>
-				
-				<form id="recFrm" action="/restaurant/addRecMenusProc" enctype="multipart/form-data" method="post">
-					<div><button type="button" id="addMenuBtn" onclick="addRecMenu()">메뉴 추가</button></div>
-					<input type="hidden" name="i_rest" value="${data.i_rest}">
-					<div id="recItem">
-						<!-- <div class="menu_input">
-							메뉴: <input type="text" name="menu_nm">가격: <input type="number" name="menu_price">사진: <input type="file" name="menu_pic">
-						</div> -->
-					</div>
-					<div><input type="submit" value="등록"></div>					
-				</form>
-			</div>
-		</c:if>
 		<div class="recMenuContainer">
 			<c:forEach items="${ recommendMenuList }" var="item">
 				<div class="recMenuItem" id="recMenuItem_${item.seq}">
@@ -35,7 +19,7 @@
 						<div class="nm">${ item.menu_nm }</div>
 						<div class="price"><fmt:formatNumber type="number" value="${item.menu_price}"/></div>
 					</div>
-					<c:if test="${ loginUser.i_user == data.i_user && item.menu_pic != null }">
+					<c:if test="${ loginUser.i_user == data.i_user }">
 						<div class="delIconContainer" onclick="delRecMenu(${data.i_rest}, ${item.seq})">
 							<span class="material-icons">
 								delete
@@ -45,7 +29,32 @@
 				</div>
 			</c:forEach>
 		</div>
-	<div id="sectionContainerCenter">
+		<div id="sectionContainerCenter">
+			<c:if test="${loginUser.i_user == data.i_user}">
+				<div id="formContainer">
+					<button id="delBtn" onclick="isDel()">가게 삭제</button>
+					<h2>- 추천 메뉴 -</h2>
+					<div>
+						<div><button type="button" id="addMenuBtn" onclick="addRecMenu()">추천 메뉴 추가</button></div>
+						<form id="recFrm" action="/restaurant/addRecMenusProc" enctype="multipart/form-data" method="post">						
+							<input type="hidden" name="i_rest" value="${data.i_rest}">
+							<div id="recItem"></div>
+							<div><input type="submit" value="등록"></div>					
+						</form>
+					</div>
+					<h2>- 메뉴 -</h2>
+					<div>
+						<form id="menuFrm" action="/restaurant/addMenusProc" enctype="multipart/form-data" method="post">							
+							<input type="hidden" name="i_rest" value="${data.i_rest}">
+							<input type="file" name="menu_pic" multiple>
+							<div id="menuItem"></div>
+							<div><input type="submit" value="등록"></div>					
+						</form>
+					</div>
+				</div>
+			</c:if>
+	
+	
 		<div class="restaurant-detail">
 			<div id="detail-header">
 				<div class="restaurant_title_wrap">
@@ -69,6 +78,12 @@
 						<tr>
 							<th>카테고리</th>
 							<td>${data.cdCategoryName}</td>
+						</tr>
+						<tr>
+							<th>메뉴</th>
+							<td>
+								
+							</td>
 						</tr>						
 					</tbody>
 				</table>
@@ -111,6 +126,9 @@
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>	
 <script>
 	function delRecMenu(i_rest, seq){
+		if(!confirm('삭제하시겠습니까?')){
+			return
+		}
 		console.log('i_rest:' + i_rest)
 		console.log('seq: ' + seq)
 		axios.get('/restaurant/ajaxDelRecMenu', {

@@ -9,27 +9,33 @@
 
 .recMenuContainer > .recMenuItem {
 	width: 150px;
-	height: 90px;
+	height: 120px;
 	position: relative;	
+	margin-right: 30px;	
 }
 .recMenuContainer > .recMenuItem > .pic {
+	width: 150px;
+    height: 120px;
 	margin-right: 20px;	
+	box-shadow: 1px 1px 4px grey;
 }
 
 .recMenuContainer > .recMenuItem > .pic > img {
 	width: 100%; 
-	height: 80px;
+	height: 120px;
 }
 
 .recMenuContainer > .recMenuItem > .info {
 	width: 100%;
 	height: 30px; 
+	position: absolute;
+	bottom: -35px;
 }
 
 .recMenuContainer > .recMenuItem > .delIconContainer{
 	cursor: pointer;
 	position: absolute;
-	top: 3px; right: 20px; 
+	top: 3px; right: 5px; 
 	color: white;
     text-shadow: 1px 2px 5px dimgrey;
 }

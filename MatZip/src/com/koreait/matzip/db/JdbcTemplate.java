@@ -32,6 +32,7 @@ public class JdbcTemplate {
 			con = DbManager.getCon();
 			ps = con.prepareStatement(sql);
 			jdbc.update(ps); 
+			System.out.println("ps : " + ps);
 			result = ps.executeUpdate(); // 콜백
 		} catch (Exception e) {
 			e.printStackTrace();

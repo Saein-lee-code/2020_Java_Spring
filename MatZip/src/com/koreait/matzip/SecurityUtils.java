@@ -10,7 +10,9 @@ import javax.servlet.http.HttpSession;
 import com.koreait.matzip.vo.UserVO;
 
 public class SecurityUtils {
-	
+	public static int getLoginUserPk(HttpServletRequest request) {
+		return getLoginUser(request).getI_user();
+	}
 	public static boolean isLogout(HttpServletRequest request) {
 		if(null == getLoginUser(request)) {
 			return true;

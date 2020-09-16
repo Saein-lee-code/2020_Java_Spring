@@ -69,18 +69,24 @@ public class RestaurantController {
 		
 		return ViewRef.TEMP_MENU;
 	}
-	
+	//추천 메뉴
 	public String addRecMenusProc(HttpServletRequest request) {
 		int i_rest = service.addRecMenus(request);
 		return "redirect:/restaurant/restDetail?i_rest=" + i_rest;
 	}
-	
+	// 메뉴
+	public String addMenuProc(HttpServletRequest request) {
+		int i_rest = service.addMenus(request);
+		return "redirect:/restaurant/restDetail?i_rest=" + i_rest;
+	}
 	public String ajaxDelRecMenu(HttpServletRequest request) {
 		int i_rest = CommonUtils.getIntParameter("i_rest", request);
+		int i_user = SecurityUtils.getLoginUserPk(request);
 		int seq = CommonUtils.getIntParameter("seq", request);
 		RestaurantRecommendMenuVO param = new RestaurantRecommendMenuVO();
 		param.setI_rest(i_rest);
 		param.setSeq(seq);
+		param.setI_user(i_user);
 		
 		int result = service.delRecMenu(param);
 		return "ajax:" + result;

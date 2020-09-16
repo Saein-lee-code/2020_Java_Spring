@@ -1,6 +1,13 @@
 package com.koreait.matzip.vo;
 
 public class RestaurantRecommendMenuVO {
+	private int i_user;
+	public int getI_user() {
+		return i_user;
+	}
+	public void setI_user(int i_user) {
+		this.i_user = i_user;
+	}
 	private int i_rest;
 	private int seq;
 	private String menu_nm;
