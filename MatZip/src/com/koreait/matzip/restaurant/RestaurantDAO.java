@@ -96,6 +96,30 @@ public class RestaurantDAO {
 		});
 		return list;
 	}
+	public List<RestaurantRecommendMenuVO> selMenuList(int i_rest){
+		List<RestaurantRecommendMenuVO> list = new ArrayList();
+		String sql = " SELECT seq, menu_pic FROM t_restaurant_menu "
+				+ " WHERE i_rest = ? ";
+		JdbcTemplate.executeQuery(sql, new JdbcSelectInterface() {
+
+			@Override
+			public void prepared(PreparedStatement ps) throws SQLException {
+				ps.setInt(1,  i_rest);				
+				
+			}
+
+			@Override
+			public void executeQuery(ResultSet rs) throws SQLException {
+				while(rs.next()) {
+					RestaurantRecommendMenuVO vo = new RestaurantRecommendMenuVO();
+					vo.setSeq(rs.getInt("seq"));
+					vo.setMenu_pic(rs.getNString("menu_pic"));
+					list.add(vo);
+				}				
+			}			
+		});
+		return list;
+	}
 	public List<RestaurantDomain> selRestList(){
 		List<RestaurantDomain> list = new ArrayList();
 		String sql = " SELECT i_rest, i_user, cd_category, nm, lat, lng FROM t_restaurant ";

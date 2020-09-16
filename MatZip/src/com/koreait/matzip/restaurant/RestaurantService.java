@@ -44,21 +44,21 @@ public class RestaurantService {
 	public int addMenus(HttpServletRequest request) {
 		int i_rest = CommonUtils.getIntParameter("i_rest", request);
 		String savePath = request.getServletContext().getRealPath("/res/img/restaurant"); // /앞의 절대경로가 필요한것		    
-
+		// temp 필요없음
 		String saveFileNm = "";
+		
+		String targetPath = savePath + "/" + i_rest + "/menu";
+		FileUtils.makeFolder(targetPath); // menu 폴더생성
+		
 		RestaurantRecommendMenuVO param = new RestaurantRecommendMenuVO();
 		param.setI_rest(i_rest);
-
-		String targetPath = savePath + "/" + i_rest + "/menu";
-		FileUtils.makeFolder(targetPath); // menu 폴더생성					
-
 		try {			
 			for(Part part : request.getParts()) {
-				String fileName = FileUtils.getFileName(part);				
+				String fileName = FileUtils.getFileName(part); // 파일이름불러옴
 				if(fileName != null) {
 					String ext = FileUtils.getExt(fileName); // 확장자
 					saveFileNm = UUID.randomUUID() + ext; // 사람들이 올리는 파일이름을 바꿈.
-					part.write(targetPath + "/" + saveFileNm); //파일저장					
+					part.write(targetPath + "/" + saveFileNm); //파일저장		/ 대신으로 File.separator 쓰기도함			
 				    param.setMenu_pic(saveFileNm);
 				    dao.insMenu(param);
 				}
@@ -159,9 +159,14 @@ public class RestaurantService {
 	
 	public List<RestaurantRecommendMenuVO> getRecommendMenuList(int i_rest) {
 		return dao.selRecommendMenuList(i_rest);
-}
+	}
 
+	public List<RestaurantRecommendMenuVO> getMenuList(int i_rest){
+		return dao.selMenuList(i_rest);
+	}
+	
 	public int delRecMenu(RestaurantRecommendMenuVO param) {		
 		return dao.delRecMenu(param);
 	}
+	
 }

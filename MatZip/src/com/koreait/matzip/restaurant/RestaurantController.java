@@ -63,6 +63,7 @@ public class RestaurantController {
 		param.setI_rest(i_rest);
 		request.setAttribute("css", new String[] {"restaurant"});
 		request.setAttribute("recommendMenuList", service.getRecommendMenuList(i_rest));
+		request.setAttribute("menuList", service.getMenuList(i_rest));
 		request.setAttribute("data", service.getRest(param));
 		request.setAttribute(Const.TITLE, "디테일");
 		request.setAttribute(Const.VIEW, "restaurant/restDetail");
@@ -79,6 +80,9 @@ public class RestaurantController {
 		int i_rest = service.addMenus(request);
 		return "redirect:/restaurant/restDetail?i_rest=" + i_rest;
 	}
+	
+	
+	
 	public String ajaxDelRecMenu(HttpServletRequest request) {
 		int i_rest = CommonUtils.getIntParameter("i_rest", request);
 		int i_user = SecurityUtils.getLoginUserPk(request);
@@ -91,4 +95,5 @@ public class RestaurantController {
 		int result = service.delRecMenu(param);
 		return "ajax:" + result;
 	}
+	
 }
