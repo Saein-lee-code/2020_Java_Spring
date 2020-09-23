@@ -8,6 +8,8 @@
 <title>${title}</title>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="/res/css/common.css">
+<link rel="stylesheet" type="text/css" href="/res/css/restaurant.css">
+
 <c:forEach items="${css}" var="item">
 	<link rel="stylesheet" type="text/css" href="/res/css/${item}.css">
 </c:forEach>
@@ -42,7 +44,7 @@
 			<div id="headerRight">
 				<a href="/rest/map">지도</a>
 				<c:if test="${loginUser != null}">				
-					<a class="ml15" href="/rest/restReg">등록</a>
+					<a class="ml15" href="/rest/reg">등록</a>
 				</c:if>
 				<c:if test="${loginUser == null}">
 					<a class="ml15" href="#" onclick="alert('로그인이 필요합니다')">등록</a>
