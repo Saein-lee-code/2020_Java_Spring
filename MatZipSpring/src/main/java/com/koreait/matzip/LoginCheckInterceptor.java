@@ -3,7 +3,7 @@ package com.koreait.matzip;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
-
+// 인터셉터에서 request값을 받아서 (i_user 체크를 여기서 편하게 다해버릴수도 있음)
 public class LoginCheckInterceptor extends HandlerInterceptorAdapter{
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)throws Exception{		
@@ -12,10 +12,12 @@ public class LoginCheckInterceptor extends HandlerInterceptorAdapter{
 		String[] uriArr = uri.split("/");
 		
 		System.out.println("uriArr.length : " + uriArr.length);
-		if(uriArr[1].equals("res")) { // 주소가 이상한경우
+		if(uri.equals("/")) { // 주소가 이상한경우
 			return true;
 		}else if(uriArr.length < 3) {
 			return false;
+		}else if(uriArr[1].contentEquals("res")) { // 리소스 (js, css, img)
+			return true;
 		}
 		
 		System.out.println("Intetceptor!!!");
