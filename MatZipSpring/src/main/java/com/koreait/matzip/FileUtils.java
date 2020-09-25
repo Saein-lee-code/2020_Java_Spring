@@ -26,11 +26,20 @@ public class FileUtils {
 	public static String saveFile(String path, MultipartFile mf) {
 		if(mf.isEmpty()) { return null; }
 		String saveFileNm = getRandomUUID(mf);
+
 		try {
 			mf.transferTo(new File(path + saveFileNm));
-		}catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 		return saveFileNm;
+	}
+	public static boolean delFile(String path) {
+		File file = new File(path);
+		if(file.exists()) {
+			return file.delete();
+		}
+		return false;
 	}
 }

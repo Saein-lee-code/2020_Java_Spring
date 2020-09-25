@@ -96,8 +96,8 @@ public class RestService {
 		String[] menuPriceArr = mReq.getParameterValues("menu_price");
 		
 		
-		String path = mReq.getServletContext().getRealPath("/resources/img/rest/" + i_rest + "/rec_menu/");
-//		String path = Const.realPath + "/resources/img/rest/" + i_rest + "/rec_menu/";
+//		String path = mReq.getServletContext().getRealPath("/resources/img/rest/" + i_rest + "/rec_menu/");
+		String path = Const.realPath + "/resources/img/rest/" + i_rest + "/rec_menu/";
 		FileUtils.makeFolder(path);
 
 		List<RestRecMenuVO> list = new ArrayList();
@@ -146,19 +146,28 @@ public class RestService {
 		mapper.delRestMenu(param);
 		mapper.delRest(param);
 	}
-	
-	public int delRestRecMenu(RestPARAM param) {
-		return mapper.delRestRecMenu(param);
-	}
-	public int delRestMenu(RestPARAM param) {
-		return mapper.delRestMenu(param);
-	}
+
 	public int delRest(RestPARAM param) {
 		return mapper.delRest(param);
 	}
 	
+	public int delRestRecMenu(RestPARAM param) {
+		return mapper.delRestRecMenu(param);
+	}
+	
+	public int delRestMenu(RestPARAM param) {
+		if(param.getMenu_pic() != null && "".equals(param.getMenu_pic())) {
+			String path = Const.realPath + "/resources/img/rest/" + param.getI_rest() + "/menu/";
+			if(FileUtils.delFile(path + param.getMenu_pic())) { // true(1) : db도 삭제
+				return mapper.delRestMenu(param);
+			}else { // 0번이 넘어옴
+				return Const.FAIL;
+			}			
+		}
+		return mapper.delRestMenu(param); // 파일명이 없어도 삭제가가능하도록 함.
+	}
 
-	public int delRecMenu(RestPARAM param, String realPath) {
+	public int delRestRecMenu(RestPARAM param, String realPath) {
 		// 파일삭제
 		List<RestRecMenuVO> list = mapper.selRestRecMenus(param);
 		if(list.size() == 1) { // record수가 0개 아니면 1이 넘어옴. 1이넘어왔다 -> 내가 쓴글이맞음. 삭제할 정보가 넘어옴.
@@ -174,7 +183,5 @@ public class RestService {
 			}
 		}
 		return mapper.delRestRecMenu(param);
-	}
-	
-	
+	}	
 }

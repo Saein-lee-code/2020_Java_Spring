@@ -79,27 +79,8 @@
 							<tr>
 								<th>메뉴</th>
 								<td>	
-									<div class="menuList">
-										<c:if test="${fn:length(menuList) > 0}">
-										<!-- menuList : request 에 담겨있는 key 값. 담는일 controller -> service// model.addAttribute -> request.setattribute -->
-											<c:forEach var="i" begin="0" end="${fn:length(menuList) > 3 ? 2 : fn:length(menuList) - 1}">
-												<div class="menuItem">
-													<img src="/res/img/rest/${data.i_rest}/menu/${menuList[i].menu_pic}">
-													<c:if test="${loginUser.i_user == data.i_user}">
-														<div class="delIconContainer" onclick="delMenu(${menuList[i].seq})">
-															<span class="material-icons">clear</span>
-														</div>
-													</c:if>
-												</div>
-											</c:forEach>
-										</c:if>
-										<c:if test="${fn:length(menuList) > 3}">
-											<div class="menuItem bg_black">
-												<div class="moreCnt">
-													+${fn:length(menuList) - 3}
-												</div>
-											</div>
-										</c:if>
+									<div id="conMenuList" class="menuList">
+										
 									</div>
 								</td>
 							</tr>
@@ -112,6 +93,66 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
+	var isMe = ${loginUser.i_user == data.i_user}
+	var menuList = []
+
+	function ajaxSelMenuList(){
+		axios.get('/rest/ajaxSelMenuList', {
+			params: {
+				i_rest: ${ data.i_rest }
+			}
+		}).then(function(res){
+			menuList = res.data
+			refreshMenu()
+		})// 콜백함수
+	}
+	
+	function refreshMenu(){
+		conMenuList.innerHTML = ''
+		menuList.forEach(function(item, idx){
+			makeMenuItem(item, idx)
+		})
+	}
+	function makeMenuItem(item, idx){
+		const div = document.createElement('div')
+		div.setAttribute('class', 'menuItem')
+		
+		const img = document.createElement('img')
+		img.setAttribute('src',`/res/img/rest/${data.i_rest}/menu/\${item.menu_pic}`)
+		div.append(img)
+		<c:if test="${loginUser.i_user == data.i_user}">
+			const delDiv = document.createElement('div')
+			delDiv.setAttribute('class', 'delIconContainer')
+			delDiv.addEventListener('click', function(){
+				if(idx > -1){
+					// 서버 삭제 요청!
+					axios.get('/rest/ajaxDelMenu', {
+						params: {
+							i_rest: ${data.i_rest},
+							seq: item.seq,
+							menu_pic: item.menu_pic
+						}
+					}).then(function(res){
+						if(res.data == 1){
+							menuList.splice(idx, 1)
+							refreshMenu()
+						}else{
+							alert('메뉴를 삭제 할 수 없습니다.')
+						}
+					})
+					
+					menuList.splice(idx, 1)				
+					refreshMenu()	
+				}				
+			})
+			const span = document.createElement('span')
+			span.setAttribute('class', 'material-icons')
+			span.innerText = 'clear'
+			delDiv.append(span)
+			div.append(delDiv)
+		</c:if>
+			conMenuList.append(div)
+	}
 	function delRecMenu(seq) {
 		if(!confirm('삭제하시겠습니까?')) {
 			return
@@ -132,17 +173,20 @@
 			}
 		})
 	}
-
+	<c:if test="${loginUser.i_user == data.i_user}">
 	var idx = 0;
 	function addRecMenu() {
 		var div = document.createElement('div')
 		div.setAttribute('id', 'recMenu_' + idx++)
+		
 		var inputNm = document.createElement('input')
 		inputNm.setAttribute('type', 'text')
 		inputNm.setAttribute('name', 'menu_nm')
+		
 		var inputPrice = document.createElement('input')
 		inputPrice.setAttribute('type', 'number')
 		inputPrice.setAttribute('name', 'menu_price')
+		
 		var inputPic = document.createElement('input')
 		inputPic.setAttribute('type', 'file')
 		inputPic.setAttribute('name', 'menu_pic')
@@ -165,12 +209,14 @@
 		recItem.append(div)
 	}
 	addRecMenu()
-
+	</c:if>
 	function isDel() {
 		if(confirm('삭제 하시겠습니까?')) {
 			location.href = '/rest/del?i_rest=${data.i_rest}'
 		}
 	}
+	ajaxSelMenuList()
+	
 </script>
 
 

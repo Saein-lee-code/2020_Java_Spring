@@ -22,19 +22,21 @@ public class RestInterceptor extends HandlerInterceptorAdapter{
 		String[] uriArr = uri.split("/");
 		
 		//쿼리문에 굳이 i_user값을 넘겨주지않아도 된다는 말.
-		String[] checkKeywords = {"del", "Del", "upd"};
+		String[] checkKeywords = {"del", "Del", "upd", "Upd"};
 		for(String keyword: checkKeywords) {
 			if(uriArr[2].toLowerCase().contains(keyword)) {
-				int i_rest = CommonUtils.parseStringToInt(request.getParameter("i_rest"));
+				int i_rest = CommonUtils.getIntParameter("i_rest", request);
 				if(i_rest == 0) {
 					return false; // return false 면 안넘어감. 다른 유저가 삭제할수없음.
 				}
-				int i_user = SecurityUtils.getLoginUserPk(request);
+				int i_user = SecurityUtils.getLoginUserPk(request); // 로그인한 사람의 i_user
+				
 				boolean result = _authSuccess(i_rest, i_user);
 				System.out.println("=== auth result : " + result);
 				return result;
 			}
-		}		
+		}
+		System.out.println("!!!=== auth result : true");
 		return true;
 	}
 	
