@@ -41,4 +41,16 @@ public class UserService {
 		
 		return mapper.insUser(param);
 	}
+	// is_favorite으로 안하고 getProc_type으로 이렇게 한이유
+	// 눈에 확띄게 하려고..?
+	// 
+	public int ajaxToggleFavorite(UserPARAM param) { //i_user, i_rest, proc_type
+		switch(param.getProc_type()) {		
+			case "ins":				
+				return mapper.insFavorite(param);
+			case "del":				
+				return mapper.delFavorite(param);
+		}
+		return 0;	
+	}
 }

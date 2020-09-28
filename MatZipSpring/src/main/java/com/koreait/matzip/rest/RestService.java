@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -183,5 +186,26 @@ public class RestService {
 			}
 		}
 		return mapper.delRestRecMenu(param);
+	}
+	public void updAddHits(RestPARAM param, HttpServletRequest req) {
+		// 로그인안한사람도 접근할수 있으니까 ip로 체크
+		String myIp = req.getRemoteAddr(); 
+		
+		ServletContext ctx = req.getServletContext(); // application(서버당 1개) || 개인 : request, session, pageContext
+		String currentRestReadIp = (String)ctx.getAttribute(Const.CURRENT_REST_READ_ID + param.getI_rest());
+		// ex) 5번글을 읽으면 currentRestReadIp_5
+		// ctx에 저 키값으로 담겨있었나?
+		// null -> 한번도 키값으로 뭔갈 넣은적이 없다. 처음들어간 글임
+		// hits++
+		
+		int i_user = SecurityUtils.getLoginUserPk(req);
+		if(currentRestReadIp == null || !currentRestReadIp.equals(myIp)) {
+			// 내가 쓴 글 이면 조회수 안올라게 막을 것
+			param.setI_user(i_user);
+			// 조회수 올림 처리 할것			
+			mapper.updAddHits(param);
+			ctx.setAttribute(Const.CURRENT_REST_READ_ID + param.getI_rest(), myIp);
+		}
+		
 	}	
 }

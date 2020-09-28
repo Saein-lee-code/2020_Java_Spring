@@ -9,6 +9,7 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="/res/css/common.css">
 <link rel="stylesheet" type="text/css" href="/res/css/restaurant.css">
+<link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap" rel="stylesheet">
 
 <c:forEach items="${css}" var="item">
 	<link rel="stylesheet" type="text/css" href="/res/css/${item}.css">
